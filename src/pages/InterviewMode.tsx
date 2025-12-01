@@ -2,9 +2,33 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MessageSquare, Code, Trophy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 const InterviewMode = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const checkAuthAndNavigate = async (path: string, scrollToDemo = false) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to access practice modes.",
+        variant: "destructive",
+      });
+      navigate("/auth");
+      return;
+    }
+
+    navigate(path);
+    if (scrollToDemo) {
+      setTimeout(() => {
+        document.getElementById("demo")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  };
 
   const modes = [
     {
@@ -12,26 +36,21 @@ const InterviewMode = () => {
       title: "Interview Practice",
       description: "Practice your interview skills with AI-powered voice interviews",
       path: "/",
-      action: () => {
-        navigate("/");
-        setTimeout(() => {
-          document.getElementById("demo")?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      }
+      action: () => checkAuthAndNavigate("/", true)
     },
     {
       icon: Code,
       title: "Start Practicing",
       description: "Write code in a VS Code-like environment and practice coding",
       path: "/coding-practice",
-      action: () => navigate("/coding-practice")
+      action: () => checkAuthAndNavigate("/coding-practice")
     },
     {
       icon: Trophy,
       title: "Coding Challenge",
       description: "Take on coding challenges and test your skills",
       path: "/coding-challenge",
-      action: () => navigate("/coding-challenge")
+      action: () => checkAuthAndNavigate("/coding-challenge")
     }
   ];
 
