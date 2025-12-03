@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import ProfileSettings from "./pages/ProfileSettings";
 import InterviewMode from "./pages/InterviewMode";
 import CodingPractice from "./pages/CodingPractice";
 import CodingChallenge from "./pages/CodingChallenge";
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile-settings" element={<ProfileSettings />} />
           <Route path="/interview-mode" element={<InterviewMode />} />
           <Route path="/coding-practice" element={<CodingPractice />} />
           <Route path="/coding-challenge" element={<CodingChallenge />} />
