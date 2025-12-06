@@ -56,8 +56,8 @@ const InterviewMode = () => {
       icon: FileText,
       title: "Resume Analyzer",
       description: "Get AI-powered feedback on your resume to stand out",
-      path: "/profile-settings",
-      action: () => checkAuthAndNavigate("/profile-settings")
+      path: "/resume-analyzer",
+      action: () => checkAuthAndNavigate("/resume-analyzer")
     }
   ];
 

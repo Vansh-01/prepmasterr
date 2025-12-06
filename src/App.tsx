@@ -10,6 +10,7 @@ import ProfileSettings from "./pages/ProfileSettings";
 import InterviewMode from "./pages/InterviewMode";
 import CodingPractice from "./pages/CodingPractice";
 import CodingChallenge from "./pages/CodingChallenge";
+import ResumeAnalyzer from "./pages/ResumeAnalyzer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/interview-mode" element={<InterviewMode />} />
           <Route path="/coding-practice" element={<CodingPractice />} />
           <Route path="/coding-challenge" element={<CodingChallenge />} />
+          <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
