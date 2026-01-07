@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import Editor from "@monaco-editor/react";
-import { Play, Home, CheckCircle, Trash2, Terminal } from "lucide-react";
+import { Play, Home, CheckCircle, Trash2, Terminal, Clock, Pause, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { highlightConsoleOutput } from "@/utils/consoleSyntaxHighlight";
 import { supabase } from "@/integrations/supabase/client";
+
+const TIMER_OPTIONS = [
+  { label: "15 min", value: 15 * 60 },
+  { label: "30 min", value: 30 * 60 },
+  { label: "45 min", value: 45 * 60 },
+  { label: "60 min", value: 60 * 60 },
+];
 
 const challengeTemplates: Record<string, string> = {
   javascript: `function twoSum(nums, target) {
@@ -56,6 +63,79 @@ const CodingChallenge = () => {
   const [testResults, setTestResults] = useState<string[]>([]);
   const [standardOutput, setStandardOutput] = useState<string[]>([]);
   const [errorOutput, setErrorOutput] = useState<string[]>([]);
+  
+  // Timer state
+  const [timerDuration, setTimerDuration] = useState(30 * 60); // Default 30 min
+  const [timeRemaining, setTimeRemaining] = useState(30 * 60);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [timerStarted, setTimerStarted] = useState(false);
+
+  const formatTime = useCallback((seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  }, []);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    
+    if (isTimerRunning && timeRemaining > 0) {
+      interval = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            setIsTimerRunning(false);
+            toast({
+              title: "Time's up!",
+              description: "Your interview time has ended.",
+              variant: "destructive",
+            });
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isTimerRunning, timeRemaining, toast]);
+
+  const handleStartTimer = () => {
+    setTimerStarted(true);
+    setIsTimerRunning(true);
+  };
+
+  const handlePauseTimer = () => {
+    setIsTimerRunning(false);
+  };
+
+  const handleResumeTimer = () => {
+    if (timeRemaining > 0) {
+      setIsTimerRunning(true);
+    }
+  };
+
+  const handleResetTimer = () => {
+    setIsTimerRunning(false);
+    setTimerStarted(false);
+    setTimeRemaining(timerDuration);
+  };
+
+  const handleTimerDurationChange = (value: string) => {
+    const newDuration = parseInt(value);
+    setTimerDuration(newDuration);
+    if (!timerStarted) {
+      setTimeRemaining(newDuration);
+    }
+  };
+
+  const getTimerColor = () => {
+    const percentage = (timeRemaining / timerDuration) * 100;
+    if (percentage <= 10) return "text-destructive";
+    if (percentage <= 25) return "text-orange-500";
+    return "text-primary";
+  };
 
   const challenge = {
     title: "Two Sum",
@@ -129,10 +209,58 @@ const CodingChallenge = () => {
               {challenge.difficulty}
             </span>
           </div>
-          <Button variant="outline" onClick={() => navigate("/interview-mode")}>
-            <Home className="w-4 h-4 mr-2" />
-            Back to Modes
-          </Button>
+          
+          {/* Timer Section */}
+          <div className="flex items-center gap-4">
+            <Card className="flex items-center gap-3 px-4 py-2">
+              <Clock className={`w-5 h-5 ${getTimerColor()}`} />
+              <span className={`text-2xl font-mono font-bold ${getTimerColor()}`}>
+                {formatTime(timeRemaining)}
+              </span>
+              
+              <div className="flex items-center gap-2 ml-2 border-l pl-3">
+                {!timerStarted ? (
+                  <>
+                    <Select value={timerDuration.toString()} onValueChange={handleTimerDurationChange}>
+                      <SelectTrigger className="w-[90px] h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {TIMER_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value.toString()}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Button size="sm" variant="default" onClick={handleStartTimer}>
+                      <Play className="w-4 h-4" />
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    {isTimerRunning ? (
+                      <Button size="sm" variant="outline" onClick={handlePauseTimer}>
+                        <Pause className="w-4 h-4" />
+                      </Button>
+                    ) : (
+                      <Button size="sm" variant="default" onClick={handleResumeTimer} disabled={timeRemaining === 0}>
+                        <Play className="w-4 h-4" />
+                      </Button>
+                    )}
+                    <Button size="sm" variant="outline" onClick={handleResetTimer}>
+                      <RotateCcw className="w-4 h-4" />
+                    </Button>
+                  </>
+                )}
+              </div>
+            </Card>
+            
+            <Button variant="outline" onClick={() => navigate("/interview-mode")}>
+              <Home className="w-4 h-4 mr-2" />
+              Back to Modes
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
