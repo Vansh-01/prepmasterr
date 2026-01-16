@@ -6,12 +6,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import Editor from "@monaco-editor/react";
-import { Play, Home, CheckCircle, Trash2, Terminal, Clock, Pause, RotateCcw, ChevronLeft, List } from "lucide-react";
+import { Play, Home, CheckCircle, Trash2, Terminal, Clock, Pause, RotateCcw, ChevronLeft, List, Lightbulb, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { highlightConsoleOutput } from "@/utils/consoleSyntaxHighlight";
 import { supabase } from "@/integrations/supabase/client";
-import { codingChallenges, getDifficultyColor, type CodingChallenge as ChallengeType, type Difficulty } from "@/data/codingChallenges";
+import { codingChallenges, getDifficultyColor, challengeHints, type CodingChallenge as ChallengeType, type Difficulty } from "@/data/codingChallenges";
 
 const TIMER_OPTIONS = [
   { label: "15 min", value: 15 * 60 },
@@ -36,6 +36,9 @@ const CodingChallenge = () => {
   const [testResults, setTestResults] = useState<string[]>([]);
   const [standardOutput, setStandardOutput] = useState<string[]>([]);
   const [errorOutput, setErrorOutput] = useState<string[]>([]);
+  
+  // Hints state
+  const [revealedHints, setRevealedHints] = useState(0);
   
   // Timer state
   const [timerDuration, setTimerDuration] = useState(30 * 60);
@@ -118,7 +121,24 @@ const CodingChallenge = () => {
     setTestResults([]);
     setStandardOutput([]);
     setErrorOutput([]);
+    setRevealedHints(0);
     handleResetTimer();
+  };
+
+  const hints = challengeHints[selectedChallenge.id] || [];
+  
+  const handleRevealNextHint = () => {
+    if (revealedHints < hints.length) {
+      setRevealedHints(prev => prev + 1);
+      toast({
+        title: `Hint ${revealedHints + 1} revealed`,
+        description: "Try to solve the problem with this hint before revealing more.",
+      });
+    }
+  };
+
+  const handleHideAllHints = () => {
+    setRevealedHints(0);
   };
 
   const handleLanguageChange = (newLanguage: string) => {
@@ -304,6 +324,15 @@ const CodingChallenge = () => {
               <TabsList>
                 <TabsTrigger value="description">Description</TabsTrigger>
                 <TabsTrigger value="examples">Examples</TabsTrigger>
+                <TabsTrigger value="hints" className="flex items-center gap-1">
+                  <Lightbulb className="w-3 h-3" />
+                  Hints
+                  {hints.length > 0 && (
+                    <Badge variant="secondary" className="ml-1 text-xs px-1.5 py-0">
+                      {revealedHints}/{hints.length}
+                    </Badge>
+                  )}
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="description" className="mt-4">
                 <p className="text-muted-foreground">{selectedChallenge.description}</p>
@@ -319,6 +348,77 @@ const CodingChallenge = () => {
                     </div>
                   </div>
                 ))}
+              </TabsContent>
+              <TabsContent value="hints" className="mt-4">
+                {hints.length === 0 ? (
+                  <p className="text-muted-foreground">No hints available for this challenge.</p>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-muted-foreground">
+                        Revealing hints will help you solve the problem, but try to solve it yourself first!
+                      </p>
+                      <div className="flex gap-2">
+                        {revealedHints > 0 && (
+                          <Button variant="outline" size="sm" onClick={handleHideAllHints}>
+                            <EyeOff className="w-4 h-4 mr-1" />
+                            Hide All
+                          </Button>
+                        )}
+                        {revealedHints < hints.length && (
+                          <Button variant="default" size="sm" onClick={handleRevealNextHint}>
+                            <Eye className="w-4 h-4 mr-1" />
+                            Reveal Hint {revealedHints + 1}
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {hints.map((hint, index) => (
+                        <div
+                          key={index}
+                          className={`relative rounded-lg border transition-all duration-300 ${
+                            index < revealedHints 
+                              ? "bg-primary/5 border-primary/20" 
+                              : "bg-muted/50 border-muted"
+                          }`}
+                        >
+                          <div className="p-4">
+                            <div className="flex items-start gap-3">
+                              <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                                index < revealedHints 
+                                  ? "bg-primary text-primary-foreground" 
+                                  : "bg-muted-foreground/20 text-muted-foreground"
+                              }`}>
+                                {index + 1}
+                              </div>
+                              <div className="flex-1">
+                                {index < revealedHints ? (
+                                  <p className="text-sm">{hint}</p>
+                                ) : (
+                                  <div className="flex items-center gap-2 text-muted-foreground">
+                                    <EyeOff className="w-4 h-4" />
+                                    <span className="text-sm italic">Hint {index + 1} - Click "Reveal" to show</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {revealedHints === hints.length && hints.length > 0 && (
+                      <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                        <p className="text-sm text-green-700 dark:text-green-400 flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4" />
+                          All hints revealed! Now try implementing the solution.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
           </Card>
