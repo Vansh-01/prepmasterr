@@ -13,6 +13,155 @@ export interface CodingChallenge {
   templates: Record<string, string>;
 }
 
+// Hints for each challenge - progressively reveals solution approaches
+export const challengeHints: Record<string, string[]> = {
+  "two-sum": [
+    "Think about what information you need to find: for each number, you need to check if (target - number) exists.",
+    "A brute force approach would check every pair - but can you do better using a data structure for O(1) lookups?",
+    "Use a hash map to store numbers you've seen and their indices. For each number, check if (target - num) is already in the map."
+  ],
+  "palindrome-number": [
+    "Negative numbers cannot be palindromes. Also think about numbers ending in 0.",
+    "You could convert to a string, but can you solve it mathematically without extra space?",
+    "Try reversing only half the number and compare. When the reversed half equals or exceeds the remaining half, you've reached the middle."
+  ],
+  "reverse-string": [
+    "You need to modify the array in-place with O(1) extra memory.",
+    "Think about using two pointers - one at the start and one at the end.",
+    "Swap characters at the two pointers, then move them toward each other until they meet."
+  ],
+  "longest-substring": [
+    "You need to track which characters are in the current window.",
+    "Consider using a sliding window approach with two pointers.",
+    "Use a Set or Map to track characters. When you find a duplicate, shrink the window from the left until it's valid again."
+  ],
+  "add-two-numbers": [
+    "Think about how you add numbers digit by digit, handling carry.",
+    "Traverse both lists simultaneously, summing corresponding digits plus any carry.",
+    "Create a dummy head node to simplify list construction. Don't forget to handle the final carry!"
+  ],
+  "container-with-most-water": [
+    "The area is determined by the shorter line and the distance between lines.",
+    "Consider starting with the widest container (first and last lines).",
+    "Use two pointers. Move the pointer pointing to the shorter line inward, as that's the only way to potentially find a larger area."
+  ],
+  "median-sorted-arrays": [
+    "The median divides the combined array into two equal halves.",
+    "Binary search can help find the correct partition point in O(log(min(m,n))) time.",
+    "Partition both arrays such that all elements on the left are smaller than all elements on the right. Adjust the partition using binary search on the smaller array."
+  ],
+  "longest-palindromic-substring": [
+    "A palindrome mirrors around its center.",
+    "Consider expanding around each center (both single characters and pairs).",
+    "For each position, try expanding outward while characters match. Track the longest palindrome found. Handle both odd and even length palindromes."
+  ],
+  "trapping-rain-water": [
+    "Water at each position depends on the maximum heights on both sides.",
+    "For each bar, water trapped = min(maxLeft, maxRight) - height[i].",
+    "Use two arrays to precompute max heights from left and right, or use two pointers moving inward to compute on the fly."
+  ],
+  "valid-parentheses": [
+    "Each closing bracket must match the most recent unmatched opening bracket.",
+    "Use a stack to keep track of opening brackets.",
+    "When you see a closing bracket, check if it matches the top of the stack. The string is valid if the stack is empty at the end."
+  ],
+  "merge-sorted-array": [
+    "You have extra space at the end of nums1 to accommodate nums2.",
+    "Starting from the end avoids overwriting elements you still need.",
+    "Use three pointers: one at the end of nums1's values (m-1), one at the end of nums2 (n-1), and one at the end of nums1 (m+n-1). Fill from the back."
+  ],
+  "best-time-to-buy-sell-stock": [
+    "You need to find the maximum difference between a later price and an earlier price.",
+    "Track the minimum price seen so far as you iterate.",
+    "For each price, calculate profit if you sold at that price (price - minPrice). Update maxProfit and minPrice as you go."
+  ],
+  "climbing-stairs": [
+    "To reach step n, you could have come from step n-1 or step n-2.",
+    "This is similar to the Fibonacci sequence.",
+    "Use dynamic programming: dp[n] = dp[n-1] + dp[n-2]. You only need to track the last two values to save space."
+  ],
+  "contains-duplicate": [
+    "You need to check if any element appears more than once.",
+    "A data structure for O(1) lookups would help.",
+    "Use a Set. As you iterate, check if the element is already in the set. If yes, return true. Otherwise, add it."
+  ],
+  "single-number": [
+    "Every element appears twice except one. Think about a property that cancels out pairs.",
+    "XOR has a useful property: a XOR a = 0, and a XOR 0 = a.",
+    "XOR all numbers together. Pairs will cancel out, leaving only the single number."
+  ],
+  "3sum": [
+    "If you sort the array first, you can avoid duplicates more easily.",
+    "For each number, the problem reduces to finding two numbers that sum to the negative of that number.",
+    "Fix one number, then use two pointers on the remaining sorted array to find pairs. Skip duplicates at each step."
+  ],
+  "group-anagrams": [
+    "Anagrams have the same characters in different orders.",
+    "Think about what property is shared by all anagrams of a word.",
+    "Sort each string to get a canonical form, or count character frequencies. Use this as a hash map key to group anagrams."
+  ],
+  "product-of-array-except-self": [
+    "You can't use division. Think about prefix and suffix products.",
+    "For each element, the result is (product of all elements before it) × (product of all elements after it).",
+    "First pass: compute prefix products. Second pass: multiply by suffix products. You can do this in-place using the result array."
+  ],
+  "rotate-image": [
+    "Try to find a pattern by tracking where each element moves.",
+    "The rotation can be achieved by transposing the matrix, then reversing each row.",
+    "Transpose (swap matrix[i][j] with matrix[j][i]), then reverse each row to get 90° clockwise rotation."
+  ],
+  "coin-change": [
+    "This is an optimization problem - think about dynamic programming.",
+    "Define dp[amount] as the minimum coins needed to make that amount.",
+    "For each amount from 1 to target, try each coin. dp[i] = min(dp[i], dp[i-coin] + 1) if i-coin >= 0."
+  ],
+  "validate-bst": [
+    "A BST has the property that all left subtree nodes are less than the node, and all right subtree nodes are greater.",
+    "Checking only immediate children isn't enough - you need to track valid ranges.",
+    "Pass down min and max bounds. For left child, update max. For right child, update min. Use null or infinity for initial bounds."
+  ],
+  "lru-cache": [
+    "You need O(1) access and O(1) removal/insertion of the least recently used item.",
+    "Combine a hash map (for O(1) access) with a data structure that maintains order.",
+    "Use a doubly linked list to maintain usage order, and a hash map from key to list node. Move accessed nodes to the front; remove from the back when full."
+  ],
+  "merge-k-sorted-lists": [
+    "Think about how you would merge two sorted lists, then extend.",
+    "A min-heap can efficiently find the smallest among k elements.",
+    "Use a min-heap containing the head of each list. Pop the minimum, add it to the result, and push that node's next (if exists) to the heap."
+  ],
+  "word-search-ii": [
+    "Searching for each word separately would be inefficient.",
+    "Use a Trie to store all words and search them simultaneously.",
+    "Build a Trie from words. DFS from each cell, following Trie nodes. Mark found words and backtrack. Optimize by removing found words from Trie."
+  ],
+  "regular-expression-matching": [
+    "The '*' can match zero or more of the preceding character.",
+    "Consider using dynamic programming where dp[i][j] means s[0..i) matches p[0..j).",
+    "Handle cases: if p[j-1] == s[i-1] or '.', inherit dp[i-1][j-1]. If p[j-1] == '*', either use zero occurrences (dp[i][j-2]) or match one more (dp[i-1][j] if char matches)."
+  ],
+  "serialize-deserialize-binary-tree": [
+    "You need to encode the tree structure including null nodes.",
+    "Use a traversal (BFS or preorder DFS) and mark null nodes explicitly.",
+    "Serialize: Use preorder traversal, output values separated by delimiter, use 'null' for missing nodes. Deserialize: Parse values and reconstruct using the same traversal order."
+  ],
+  "longest-valid-parentheses": [
+    "Track the length of valid substrings ending at each position.",
+    "Use a stack to track indices of unmatched parentheses.",
+    "Push '(' indices onto stack. On ')', pop and calculate length from the new top of stack (or from -1 if empty). Keep a base index for calculation."
+  ],
+  "alien-dictionary": [
+    "The order of characters can be derived by comparing adjacent words.",
+    "This is a topological sort problem on a graph of character orderings.",
+    "Build a graph: for each pair of adjacent words, find the first differing character - that gives an edge. Use topological sort (Kahn's or DFS) to find the order."
+  ],
+  "minimum-window-substring": [
+    "You need to find the smallest window containing all characters of t.",
+    "Use a sliding window with two pointers.",
+    "Expand the right pointer until you have all characters of t. Then shrink from the left to minimize. Use a hash map to track character counts needed."
+  ]
+};
+
 export const codingChallenges: CodingChallenge[] = [
   // Easy Challenges
   {
