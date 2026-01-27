@@ -9,37 +9,67 @@ export interface JobProfileQuestions {
   [key: string]: InterviewQuestion[];
 }
 
-// Common HR questions for all profiles
+// Common HR questions for all profiles - Classic interview questions
 const commonHRQuestions: InterviewQuestion[] = [
   {
     id: 1,
     type: "HR",
-    question: "Tell me about yourself and why you're interested in this role?",
-    expectedPoints: ["Background", "Skills", "Motivation", "Career Goals"],
+    question: "Tell me about yourself.",
+    expectedPoints: ["Professional Background", "Key Skills", "Career Highlights", "Current Goals", "Relevance to Role"],
   },
   {
     id: 2,
-    type: "Behavioral",
-    question: "Describe a challenging project you worked on and how you overcame obstacles.",
-    expectedPoints: ["Problem Definition", "Solution", "Teamwork", "Outcome"],
+    type: "HR",
+    question: "Why should we hire you?",
+    expectedPoints: ["Unique Value", "Relevant Skills", "Problem-Solving Ability", "Cultural Fit", "Enthusiasm"],
   },
   {
     id: 3,
     type: "HR",
-    question: "Where do you see yourself in 5 years?",
-    expectedPoints: ["Career Goals", "Growth Mindset", "Company Alignment", "Skills Development"],
+    question: "What are your greatest strengths and weaknesses?",
+    expectedPoints: ["Self-Awareness", "Honest Examples", "Improvement Efforts", "Strength Relevance"],
   },
   {
     id: 4,
-    type: "Behavioral",
-    question: "Tell me about a time when you had to work with a difficult team member.",
-    expectedPoints: ["Conflict Resolution", "Communication", "Empathy", "Outcome"],
+    type: "HR",
+    question: "Where do you see yourself in 5 years?",
+    expectedPoints: ["Career Goals", "Growth Mindset", "Company Alignment", "Ambition", "Realistic Planning"],
   },
   {
     id: 5,
     type: "HR",
-    question: "What are your greatest strengths and weaknesses?",
-    expectedPoints: ["Self-Awareness", "Honesty", "Growth Areas", "Examples"],
+    question: "Why do you want to work here?",
+    expectedPoints: ["Company Research", "Culture Fit", "Role Alignment", "Growth Opportunities", "Value Contribution"],
+  },
+  {
+    id: 6,
+    type: "Behavioral",
+    question: "Describe a challenging project you worked on and how you overcame obstacles.",
+    expectedPoints: ["Problem Definition", "Solution Approach", "Teamwork", "Outcome", "Learnings"],
+  },
+  {
+    id: 7,
+    type: "Behavioral",
+    question: "Tell me about a time when you had to work with a difficult team member.",
+    expectedPoints: ["Conflict Resolution", "Communication", "Empathy", "Professional Approach", "Positive Outcome"],
+  },
+  {
+    id: 8,
+    type: "HR",
+    question: "What motivates you to do your best work?",
+    expectedPoints: ["Intrinsic Motivation", "Goals", "Recognition", "Challenge", "Impact"],
+  },
+  {
+    id: 9,
+    type: "HR",
+    question: "How do you handle stress and pressure?",
+    expectedPoints: ["Coping Strategies", "Prioritization", "Work-Life Balance", "Examples", "Resilience"],
+  },
+  {
+    id: 10,
+    type: "HR",
+    question: "Do you have any questions for us?",
+    expectedPoints: ["Thoughtful Questions", "Company Interest", "Role Clarity", "Growth Opportunities", "Team Culture"],
   },
 ];
 
