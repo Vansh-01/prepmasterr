@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -15,18 +15,13 @@ import {
 import {
   Building2,
   LogOut,
-  Users,
   Briefcase,
-  BarChart3,
-  FileText,
   Plus,
-  Search,
-  Settings,
-  TrendingUp,
-  UserCheck,
-  Clock,
+  PauseCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import CreateJobDialog from "@/components/company/CreateJobDialog";
+import JobListings, { type JobPosting } from "@/components/company/JobListings";
 
 interface CompanyProfile {
   id: string;
@@ -39,6 +34,8 @@ export default function CompanyDashboard() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [companyProfile, setCompanyProfile] = useState<CompanyProfile | null>(null);
+  const [jobs, setJobs] = useState<JobPosting[]>([]);
+  const [showCreateJob, setShowCreateJob] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -64,8 +61,31 @@ export default function CompanyDashboard() {
     }
 
     setCompanyProfile(data);
+    await fetchJobs(data.id);
     setLoading(false);
   };
+
+  const fetchJobs = useCallback(async (companyId?: string) => {
+    const id = companyId || companyProfile?.id;
+    if (!id) return;
+
+    const { data, error } = await supabase
+      .from("job_postings")
+      .select("*")
+      .eq("company_id", id)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load job postings.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setJobs(data || []);
+  }, [companyProfile?.id, toast]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -80,32 +100,8 @@ export default function CompanyDashboard() {
     );
   }
 
-  const quickActions = [
-    {
-      icon: Plus,
-      title: "Post a Job",
-      description: "Create a new job listing",
-      href: "#",
-    },
-    {
-      icon: Search,
-      title: "Browse Candidates",
-      description: "Search the talent pool",
-      href: "#",
-    },
-    {
-      icon: FileText,
-      title: "Review Applications",
-      description: "Check pending applications",
-      href: "#",
-    },
-    {
-      icon: Settings,
-      title: "Company Settings",
-      description: "Manage your profile",
-      href: "#",
-    },
-  ];
+  const activeJobs = jobs.filter((j) => j.status === "active").length;
+  const pausedJobs = jobs.filter((j) => j.status === "paused").length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -152,135 +148,78 @@ export default function CompanyDashboard() {
 
       {/* Main Content */}
       <main className="container px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">
-            Welcome, {companyProfile?.company_name}
-          </h1>
-          <p className="text-muted-foreground">
-            Manage your recruitment pipeline and find top talent
-          </p>
+        {/* Welcome + Create Button */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold mb-1">
+              Welcome, {companyProfile?.company_name}
+            </h1>
+            <p className="text-muted-foreground">
+              Manage your job postings and recruitment pipeline
+            </p>
+          </div>
+          <Button onClick={() => setShowCreateJob(true)} className="gap-2 shrink-0">
+            <Plus className="h-4 w-4" />
+            Post a Job
+          </Button>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Jobs</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Jobs</CardTitle>
               <Briefcase className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground mt-1">Job listings posted</p>
+              <div className="text-2xl font-bold">{jobs.length}</div>
+              <p className="text-xs text-muted-foreground mt-1">Job listings created</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Applicants</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
+              <Briefcase className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground mt-1">Candidates applied</p>
+              <div className="text-2xl font-bold">{activeJobs}</div>
+              <p className="text-xs text-muted-foreground mt-1">Currently live</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Interviews Scheduled</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Paused Listings</CardTitle>
+              <PauseCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground mt-1">Upcoming interviews</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Hires Made</CardTitle>
-              <UserCheck className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground mt-1">Successful placements</p>
+              <div className="text-2xl font-bold">{pausedJobs}</div>
+              <p className="text-xs text-muted-foreground mt-1">Temporarily hidden</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Quick Actions */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickActions.map((action) => (
-              <Card
-                key={action.title}
-                className="cursor-pointer hover:shadow-medium transition-shadow group"
-              >
-                <CardContent className="p-6 flex flex-col items-center text-center gap-3">
-                  <div className="p-3 bg-primary/10 rounded-full group-hover:bg-primary/20 transition-colors">
-                    <action.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{action.title}</h3>
-                    <p className="text-sm text-muted-foreground">{action.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-
-        {/* Recent Activity & Overview */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-primary" />
-                Recruitment Overview
-              </CardTitle>
-              <CardDescription>Your hiring pipeline at a glance</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <TrendingUp className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">No data yet</h3>
-                <p className="text-muted-foreground text-sm mb-4">
-                  Post your first job to start tracking recruitment metrics
-                </p>
-                <Button variant="outline" className="gap-2">
-                  <Plus className="h-4 w-4" />
-                  Post a Job
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-primary" />
-                Recent Applications
-              </CardTitle>
-              <CardDescription>Latest candidate submissions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <Users className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">No applications yet</h3>
-                <p className="text-muted-foreground text-sm mb-4">
-                  Applications will appear here once candidates start applying
-                </p>
-                <Button variant="outline" className="gap-2">
-                  <Search className="h-4 w-4" />
-                  Browse Candidates
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Job Listings */}
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold mb-4">Your Job Postings</h2>
+          <JobListings
+            jobs={jobs}
+            onRefresh={() => fetchJobs()}
+            onCreateClick={() => setShowCreateJob(true)}
+          />
         </div>
       </main>
+
+      {/* Create Job Dialog */}
+      {companyProfile && (
+        <CreateJobDialog
+          open={showCreateJob}
+          onOpenChange={setShowCreateJob}
+          companyId={companyProfile.id}
+          onJobCreated={() => fetchJobs()}
+        />
+      )}
     </div>
   );
 }
