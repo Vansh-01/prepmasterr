@@ -21,7 +21,9 @@ import {
   ToggleLeft,
   ToggleRight,
   Plus,
+  Pencil,
 } from "lucide-react";
+import EditJobDialog from "./EditJobDialog";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
