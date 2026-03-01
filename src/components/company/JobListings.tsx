@@ -21,7 +21,9 @@ import {
   ToggleLeft,
   ToggleRight,
   Plus,
+  Pencil,
 } from "lucide-react";
+import EditJobDialog from "./EditJobDialog";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
@@ -64,6 +66,7 @@ export default function JobListings({ jobs, onRefresh, onCreateClick }: JobListi
   const { toast } = useToast();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [editingJob, setEditingJob] = useState<JobPosting | null>(null);
 
   const handleToggleStatus = async (job: JobPosting) => {
     setTogglingId(job.id);
@@ -179,6 +182,14 @@ export default function JobListings({ jobs, onRefresh, onCreateClick }: JobListi
                   <Button
                     variant="ghost"
                     size="icon"
+                    onClick={() => setEditingJob(job)}
+                    title="Edit listing"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => handleToggleStatus(job)}
                     disabled={togglingId === job.id}
                     title={job.status === "active" ? "Pause listing" : "Activate listing"}
@@ -244,6 +255,15 @@ export default function JobListings({ jobs, onRefresh, onCreateClick }: JobListi
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {editingJob && (
+        <EditJobDialog
+          open={!!editingJob}
+          onOpenChange={(open) => !open && setEditingJob(null)}
+          job={editingJob}
+          onJobUpdated={onRefresh}
+        />
+      )}
     </>
   );
 }
