@@ -541,15 +541,30 @@ export default function Dashboard() {
       {/* Header */}
       <header className="border-b bg-card">
         <div className="container px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Link to="/interview-mode">
-              <Button variant="ghost" size="icon">
-                <ArrowLeft className="h-5 w-5" />
-              </Button>
-            </Link>
+          <div className="flex items-center gap-6">
             <Link to="/interview-mode" className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
               PrepMaster
             </Link>
+            <nav className="hidden sm:flex items-center gap-1">
+              <Link to="/dashboard">
+                <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-foreground">
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Button>
+              </Link>
+              <Link to="/profile-settings">
+                <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-foreground">
+                  <UserCircle className="h-4 w-4" />
+                  Profile Settings
+                </Button>
+              </Link>
+              <Link to="/jobs">
+                <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-foreground">
+                  <Briefcase className="h-4 w-4" />
+                  Jobs
+                </Button>
+              </Link>
+            </nav>
           </div>
           
           <DropdownMenu>
