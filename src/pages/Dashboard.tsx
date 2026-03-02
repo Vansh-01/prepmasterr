@@ -551,14 +551,6 @@ export default function Dashboard() {
               PrepMaster
             </Link>
           </div>
-
-          <div className="flex items-center gap-2">
-            <Link to="/jobs">
-              <Button variant="ghost" className="gap-2">
-                <Briefcase className="h-4 w-4" />
-                <span className="hidden sm:inline">Jobs</span>
-              </Button>
-            </Link>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -597,7 +589,6 @@ export default function Dashboard() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          </div>
         </div>
       </header>
 
