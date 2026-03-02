@@ -96,6 +96,41 @@ export default function JobBoard() {
     checkAuth();
   }, [navigate]);
 
+  const fetchAppliedJobs = async (userId: string) => {
+    const { data } = await supabase
+      .from("job_applications")
+      .select("job_id")
+      .eq("user_id", userId);
+    if (data) {
+      setAppliedJobs(new Set(data.map((a: any) => a.job_id)));
+    }
+  };
+
+  const handleApply = async (jobId: string) => {
+    setApplying(true);
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+
+    const { error } = await supabase
+      .from("job_applications")
+      .insert({ job_id: jobId, user_id: session.user.id });
+
+    if (error) {
+      toast({
+        title: "Application Failed",
+        description: error.code === "23505" ? "You've already applied to this job" : "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } else {
+      setAppliedJobs((prev) => new Set(prev).add(jobId));
+      toast({
+        title: "Application Submitted!",
+        description: "Your profile has been shared with the company.",
+      });
+    }
+    setApplying(false);
+  };
+
   const fetchJobs = async () => {
     setLoading(true);
     const { data, error } = await supabase
