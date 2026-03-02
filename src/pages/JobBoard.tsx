@@ -82,6 +82,8 @@ export default function JobBoard() {
   const [appliedJobs, setAppliedJobs] = useState<Set<string>>(new Set());
   const [applying, setApplying] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
@@ -89,6 +91,7 @@ export default function JobBoard() {
         return;
       }
       fetchJobs();
+      fetchAppliedJobs(session.user.id);
     };
     checkAuth();
   }, [navigate]);
