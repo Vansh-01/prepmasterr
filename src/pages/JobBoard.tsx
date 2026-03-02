@@ -331,6 +331,22 @@ export default function JobBoard() {
                 <p className="text-xs text-muted-foreground">
                   Posted {format(new Date(selectedJob.created_at), "MMMM d, yyyy")}
                 </p>
+
+                {appliedJobs.has(selectedJob.id) ? (
+                  <Button disabled className="w-full gap-2">
+                    <CheckCircle2 className="h-4 w-4" />
+                    Applied
+                  </Button>
+                ) : (
+                  <Button
+                    className="w-full gap-2"
+                    onClick={() => handleApply(selectedJob.id)}
+                    disabled={applying}
+                  >
+                    {applying ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                    {applying ? "Submitting..." : "Apply Now"}
+                  </Button>
+                )}
               </div>
             </>
           )}
