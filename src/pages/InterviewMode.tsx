@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquare, Code, Trophy, FileText, LayoutDashboard, User, LogOut, Target, Zap } from "lucide-react";
+import { MessageSquare, Code, Trophy, FileText, LayoutDashboard, User, LogOut, Target, Zap, Briefcase } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -158,6 +158,15 @@ const InterviewMode = () => {
               >
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/jobs")}
+                className="gap-2"
+              >
+                <Briefcase className="h-4 w-4" />
+                Jobs
               </Button>
               <Button
                 variant="ghost"
