@@ -333,6 +333,14 @@ export default function JobBoard() {
                 <p className="text-xs text-muted-foreground">
                   Posted {format(new Date(selectedJob.created_at), "MMMM d, yyyy")}
                 </p>
+
+                <Button
+                  className="w-full"
+                  disabled={appliedJobs.has(selectedJob.id) || applyingJobId === selectedJob.id}
+                  onClick={() => handleApply(selectedJob.id)}
+                >
+                  {appliedJobs.has(selectedJob.id) ? "Applied ✓" : applyingJobId === selectedJob.id ? "Applying..." : "Apply Now"}
+                </Button>
               </div>
             </>
           )}
