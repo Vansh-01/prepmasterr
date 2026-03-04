@@ -70,12 +70,16 @@ const formatSalary = (min: number | null, max: number | null) => {
 
 export default function JobBoard() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [jobs, setJobs] = useState<JobWithCompany[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [levelFilter, setLevelFilter] = useState("all");
   const [selectedJob, setSelectedJob] = useState<JobWithCompany | null>(null);
+  const [appliedJobs, setAppliedJobs] = useState<Set<string>>(new Set());
+  const [applyingJobId, setApplyingJobId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -84,10 +88,41 @@ export default function JobBoard() {
         navigate("/auth");
         return;
       }
+      setUserId(session.user.id);
       fetchJobs();
+      fetchAppliedJobs(session.user.id);
     };
     checkAuth();
   }, [navigate]);
+
+  const fetchAppliedJobs = async (uid: string) => {
+    const { data } = await supabase
+      .from("job_applications")
+      .select("job_id")
+      .eq("user_id", uid);
+    if (data) {
+      setAppliedJobs(new Set(data.map((a) => a.job_id)));
+    }
+  };
+
+  const handleApply = async (jobId: string) => {
+    if (!userId) return;
+    setApplyingJobId(jobId);
+    const { error } = await supabase
+      .from("job_applications")
+      .insert({ job_id: jobId, user_id: userId });
+    if (error) {
+      toast({
+        title: "Application failed",
+        description: error.code === "23505" ? "You have already applied to this job." : error.message,
+        variant: "destructive",
+      });
+    } else {
+      setAppliedJobs((prev) => new Set(prev).add(jobId));
+      toast({ title: "Applied!", description: "Your application has been submitted." });
+    }
+    setApplyingJobId(null);
+  };
 
   const fetchJobs = async () => {
     setLoading(true);
