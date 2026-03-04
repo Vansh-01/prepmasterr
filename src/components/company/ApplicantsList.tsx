@@ -33,6 +33,22 @@ interface ApplicantsListProps {
 export default function ApplicantsList({ jobId }: ApplicantsListProps) {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [loading, setLoading] = useState(true);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const STATUS_OPTIONS = [
+    { value: "pending", label: "Pending" },
+    { value: "shortlisted", label: "Shortlisted" },
+    { value: "accepted", label: "Accepted" },
+    { value: "rejected", label: "Rejected" },
+  ];
+
+  const statusColors: Record<string, string> = {
+    pending: "bg-muted text-muted-foreground",
+    shortlisted: "bg-primary/10 text-primary border-primary/20",
+    accepted: "bg-green-500/10 text-green-700 border-green-500/20",
+    rejected: "bg-destructive/10 text-destructive border-destructive/20",
+  };
 
   useEffect(() => {
     fetchApplicants();
