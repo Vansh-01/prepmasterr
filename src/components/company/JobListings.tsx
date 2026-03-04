@@ -14,6 +14,12 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   Briefcase,
   MapPin,
   Clock,
@@ -22,8 +28,10 @@ import {
   ToggleRight,
   Plus,
   Pencil,
+  Users,
 } from "lucide-react";
 import EditJobDialog from "./EditJobDialog";
+import ApplicantsList from "./ApplicantsList";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
@@ -67,7 +75,7 @@ export default function JobListings({ jobs, onRefresh, onCreateClick }: JobListi
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const [editingJob, setEditingJob] = useState<JobPosting | null>(null);
-
+  const [viewingApplicantsJob, setViewingApplicantsJob] = useState<JobPosting | null>(null);
   const handleToggleStatus = async (job: JobPosting) => {
     setTogglingId(job.id);
     const newStatus = job.status === "active" ? "paused" : "active";
@@ -182,6 +190,14 @@ export default function JobListings({ jobs, onRefresh, onCreateClick }: JobListi
                   <Button
                     variant="ghost"
                     size="icon"
+                    onClick={() => setViewingApplicantsJob(job)}
+                    title="View applicants"
+                  >
+                    <Users className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => setEditingJob(job)}
                     title="Edit listing"
                   >
@@ -264,6 +280,20 @@ export default function JobListings({ jobs, onRefresh, onCreateClick }: JobListi
           onJobUpdated={onRefresh}
         />
       )}
+
+      {/* Applicants Dialog */}
+      <Dialog open={!!viewingApplicantsJob} onOpenChange={(open) => !open && setViewingApplicantsJob(null)}>
+        <DialogContent className="sm:max-w-[550px] max-h-[80vh] overflow-y-auto">
+          {viewingApplicantsJob && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Applicants for "{viewingApplicantsJob.title}"</DialogTitle>
+              </DialogHeader>
+              <ApplicantsList jobId={viewingApplicantsJob.id} />
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
