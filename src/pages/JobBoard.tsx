@@ -28,6 +28,7 @@ import {
   ArrowLeft,
   DollarSign,
   Building2,
+  FileText,
 } from "lucide-react";
 import { format } from "date-fns";
 
