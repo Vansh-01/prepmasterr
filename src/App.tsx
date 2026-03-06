@@ -17,6 +17,7 @@ import ProgressDashboard from "./pages/ProgressDashboard";
 import CompanyAuth from "./pages/CompanyAuth";
 import CompanyDashboard from "./pages/CompanyDashboard";
 import JobBoard from "./pages/JobBoard";
+import MyApplications from "./pages/MyApplications";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/for-companies" element={<CompanyAuth />} />
           <Route path="/company-dashboard" element={<CompanyDashboard />} />
           <Route path="/jobs" element={<JobBoard />} />
+          <Route path="/my-applications" element={<MyApplications />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
