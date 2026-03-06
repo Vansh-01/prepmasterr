@@ -31,9 +31,12 @@ export default function MyApplications() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let userId: string | null = null;
+
     const load = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { navigate("/auth"); return; }
+      userId = user.id;
 
       const { data: apps } = await supabase
         .from("job_applications")
@@ -70,6 +73,29 @@ export default function MyApplications() {
       setLoading(false);
     };
     load();
+
+    // Realtime subscription for status updates
+    const channel = supabase
+      .channel('my-applications')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'job_applications' },
+        (payload) => {
+          const updated = payload.new as { id: string; status: string; user_id: string };
+          if (updated.user_id === userId) {
+            setApplications((prev) =>
+              prev.map((app) =>
+                app.id === updated.id ? { ...app, status: updated.status } : app
+              )
+            );
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [navigate]);
 
   return (
