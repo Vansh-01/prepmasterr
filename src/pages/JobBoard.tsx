@@ -28,6 +28,7 @@ import {
   ArrowLeft,
   DollarSign,
   Building2,
+  FileText,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -157,10 +158,14 @@ export default function JobBoard() {
           <Button variant="ghost" size="icon" onClick={() => navigate("/interview-mode")}>
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <div>
+          <div className="flex-1">
             <h1 className="text-2xl font-bold">Job Board</h1>
             <p className="text-sm text-muted-foreground">Browse open positions from top companies</p>
           </div>
+          <Button variant="outline" onClick={() => navigate("/my-applications")} className="gap-2">
+            <FileText className="h-4 w-4" />
+            My Applications
+          </Button>
         </div>
       </header>
 
