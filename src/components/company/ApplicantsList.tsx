@@ -86,13 +86,22 @@ export default function ApplicantsList({ jobId }: ApplicantsListProps) {
   };
 
   const handleViewResume = async (resumeUrl: string) => {
-    // resumeUrl is the storage path like "user-id/filename.pdf"
+    // Extract storage path from full public URL or use as-is if already a path
+    let storagePath = resumeUrl;
+    const marker = "/object/public/resumes/";
+    const idx = resumeUrl.indexOf(marker);
+    if (idx !== -1) {
+      storagePath = resumeUrl.substring(idx + marker.length);
+    }
+
     const { data } = await supabase.storage
       .from("resumes")
-      .createSignedUrl(resumeUrl, 300); // 5 min signed URL
+      .createSignedUrl(storagePath, 300);
 
     if (data?.signedUrl) {
       window.open(data.signedUrl, "_blank");
+    } else {
+      toast({ title: "Error", description: "Could not load resume.", variant: "destructive" });
     }
   };
 
