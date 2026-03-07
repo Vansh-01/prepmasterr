@@ -154,15 +154,17 @@ export default function JobBoard() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-card">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/interview-mode")}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold">Job Board</h1>
-            <p className="text-sm text-muted-foreground">Browse open positions from top companies</p>
+        <div className="container mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center gap-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <Button variant="ghost" size="icon" className="shrink-0" onClick={() => navigate("/interview-mode")}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div className="min-w-0">
+              <h1 className="text-xl sm:text-2xl font-bold truncate">Job Board</h1>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">Browse open positions from top companies</p>
+            </div>
           </div>
-          <Button variant="outline" onClick={() => navigate("/my-applications")} className="gap-2">
+          <Button variant="outline" onClick={() => navigate("/my-applications")} className="gap-2 w-full sm:w-auto">
             <FileText className="h-4 w-4" />
             My Applications
           </Button>
