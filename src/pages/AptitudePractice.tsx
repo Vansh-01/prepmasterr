@@ -33,8 +33,13 @@ const AptitudePractice = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const filteredQuestions = useMemo(() => {
-    if (category === "all") return aptitudeQuestions;
-    return aptitudeQuestions.filter((q) => q.category === category);
+    const questions = category === "all" ? [...aptitudeQuestions] : aptitudeQuestions.filter((q) => q.category === category);
+    // Fisher-Yates shuffle
+    for (let i = questions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [questions[i], questions[j]] = [questions[j], questions[i]];
+    }
+    return questions;
   }, [category]);
 
   const currentQuestion: AptitudeQuestion | undefined = filteredQuestions[currentIndex];
