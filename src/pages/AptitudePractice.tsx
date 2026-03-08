@@ -67,14 +67,17 @@ const AptitudePractice = () => {
   };
 
   const filteredQuestions = useMemo(() => {
-    const questions = category === "all" ? [...aptitudeQuestions] : aptitudeQuestions.filter((q) => q.category === category);
+    const base = category === "all" ? [...aptitudeQuestions] : aptitudeQuestions.filter((q) => q.category === category);
+    // Filter out already completed questions
+    const remaining = base.filter((q) => !completedQuestionIds.has(q.id));
+    const questions = remaining.length > 0 ? remaining : base;
     // Fisher-Yates shuffle
     for (let i = questions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [questions[i], questions[j]] = [questions[j], questions[i]];
     }
     return questions;
-  }, [category]);
+  }, [category, completedQuestionIds]);
 
   const currentQuestion: AptitudeQuestion | undefined = filteredQuestions[currentIndex];
   const totalQuestions = filteredQuestions.length;
