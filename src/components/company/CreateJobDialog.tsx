@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import SkillAutocomplete from "@/components/company/SkillAutocomplete";
-import { Badge } from "@/components/ui/badge";
 
 interface CreateJobDialogProps {
   open: boolean;
