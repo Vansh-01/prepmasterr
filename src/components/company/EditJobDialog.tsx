@@ -52,7 +52,6 @@ export default function EditJobDialog({
 }: EditJobDialogProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [skillInput, setSkillInput] = useState("");
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -76,28 +75,8 @@ export default function EditJobDialog({
         salary_max: job.salary_max?.toString() ?? "",
         skills: job.skills ?? [],
       });
-      setSkillInput("");
     }
   }, [open, job]);
-
-  const addSkill = () => {
-    const trimmed = skillInput.trim();
-    if (trimmed && !form.skills.includes(trimmed) && form.skills.length < 15) {
-      setForm({ ...form, skills: [...form.skills, trimmed] });
-      setSkillInput("");
-    }
-  };
-
-  const removeSkill = (skill: string) => {
-    setForm({ ...form, skills: form.skills.filter((s) => s !== skill) });
-  };
-
-  const handleSkillKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addSkill();
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
