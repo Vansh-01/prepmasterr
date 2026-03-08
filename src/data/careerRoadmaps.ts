@@ -806,6 +806,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build and maintain the data infrastructure that powers analytics and ML systems",
     color: "bg-violet-500/10 text-violet-600 border-violet-500/20",
     avgSalary: "$85K–$165K",
+    avgSalaryINR: "₹7L–₹25L",
     demandLevel: "Very High",
     steps: [
       {
