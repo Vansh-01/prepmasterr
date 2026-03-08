@@ -1856,6 +1856,7 @@ export const careerPaths: CareerPath[] = [
     description: "Analyze marketing campaigns, optimize spend, and drive growth through data",
     color: "bg-pink-500/10 text-pink-600 border-pink-500/20",
     avgSalary: "$50K–$95K",
+    avgSalaryINR: "₹3.5L–₹12L",
     demandLevel: "High",
     steps: [
       {
