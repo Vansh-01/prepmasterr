@@ -320,7 +320,7 @@ const InterviewMode = () => {
                 </div>
               </>
             )}
-            {!isLoading && stats.interviewsCompleted === 0 && stats.challengesCompleted === 0 && stats.aptitudeCompleted === 0 && (
+            {!isLoading && stats.interviewsCompleted === 0 && stats.challengesCompleted === 0 && (
               <p className="mt-4 text-sm text-muted-foreground text-center">
                 Start practicing to track your progress!
               </p>
