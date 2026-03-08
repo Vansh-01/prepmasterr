@@ -26,7 +26,7 @@ import {
   Clock,
   Search,
   ArrowLeft,
-  DollarSign,
+  IndianRupee,
   Building2,
   FileText,
 } from "lucide-react";
