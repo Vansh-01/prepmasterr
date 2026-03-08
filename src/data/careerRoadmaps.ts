@@ -1156,6 +1156,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build decentralized applications, smart contracts, and Web3 protocols",
     color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
     avgSalary: "$80K–$180K",
+    avgSalaryINR: "₹6L–₹25L",
     demandLevel: "Growing",
     steps: [
       {
