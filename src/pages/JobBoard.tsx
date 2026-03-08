@@ -81,6 +81,7 @@ export default function JobBoard() {
   const [appliedJobs, setAppliedJobs] = useState<Set<string>>(new Set());
   const [applyingJobId, setApplyingJobId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isCompany, setIsCompany] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -90,6 +91,15 @@ export default function JobBoard() {
         return;
       }
       setUserId(session.user.id);
+
+      // Check if user is a company account
+      const { data: companyProfile } = await supabase
+        .from("company_profiles")
+        .select("id")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+      setIsCompany(!!companyProfile);
+
       fetchJobs();
       fetchAppliedJobs(session.user.id);
     };
