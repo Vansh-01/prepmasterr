@@ -13,7 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, FileText, Loader2, Search, Users, Briefcase } from "lucide-react";
+import { ArrowLeft, CheckSquare, FileText, Loader2, Search, Users, Briefcase } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import NotificationBell from "@/components/NotificationBell";
