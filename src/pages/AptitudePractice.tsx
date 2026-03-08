@@ -20,6 +20,8 @@ const AptitudePractice = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [lastPointsEarned, setLastPointsEarned] = useState<number | null>(null);
   const [answered, setAnswered] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
 
@@ -85,6 +87,8 @@ const AptitudePractice = () => {
     setIsAnswered(false);
     setShowExplanation(false);
     setScore(0);
+    setTotalPoints(0);
+    setLastPointsEarned(null);
     setAnswered(0);
     setTimerExpired(false);
   }, [category]);
@@ -96,6 +100,13 @@ const AptitudePractice = () => {
     setAnswered((a) => a + 1);
     if (parseInt(selectedAnswer) === currentQuestion.correctAnswer) {
       setScore((s) => s + 1);
+      const basePoints = 10;
+      const timeBonus = timerEnabled ? Math.ceil((timeLeft / timerDuration) * 5) : 0;
+      const earned = basePoints + timeBonus;
+      setTotalPoints((p) => p + earned);
+      setLastPointsEarned(earned);
+    } else {
+      setLastPointsEarned(0);
     }
     setShowExplanation(true);
   };
@@ -107,6 +118,7 @@ const AptitudePractice = () => {
       setIsAnswered(false);
       setShowExplanation(false);
       setTimerExpired(false);
+      setLastPointsEarned(null);
     }
   };
 
@@ -127,6 +139,8 @@ const AptitudePractice = () => {
     setIsAnswered(false);
     setShowExplanation(false);
     setScore(0);
+    setTotalPoints(0);
+    setLastPointsEarned(null);
     setAnswered(0);
     setTimerExpired(false);
   };
@@ -164,9 +178,14 @@ const AptitudePractice = () => {
             <h1 className="text-xl font-bold truncate">Aptitude Practice</h1>
             <p className="text-xs text-muted-foreground truncate">Quantitative & Logical Reasoning</p>
           </div>
-          <Badge variant="secondary" className="hidden sm:flex gap-1">
-            <CheckCircle2 className="h-3 w-3" /> {score}/{answered} correct
-          </Badge>
+          <div className="hidden sm:flex items-center gap-2">
+            <Badge variant="secondary" className="gap-1">
+              <CheckCircle2 className="h-3 w-3" /> {score}/{answered}
+            </Badge>
+            <Badge variant="default" className="gap-1">
+              🏆 {totalPoints} pts
+            </Badge>
+          </div>
           <div className="flex items-center gap-2">
             <Select
               value={String(timerDuration)}
@@ -228,7 +247,10 @@ const AptitudePractice = () => {
         {/* Score card (mobile) */}
         <div className="sm:hidden mb-4 flex items-center gap-2">
           <Badge variant="secondary" className="gap-1">
-            <CheckCircle2 className="h-3 w-3" /> {score}/{answered} correct
+            <CheckCircle2 className="h-3 w-3" /> {score}/{answered}
+          </Badge>
+          <Badge variant="default" className="gap-1">
+            🏆 {totalPoints} pts
           </Badge>
         </div>
 
@@ -314,13 +336,21 @@ const AptitudePractice = () => {
               {/* Explanation */}
               {showExplanation && (
                 <div className={`p-4 rounded-lg border ${isCorrect ? "bg-green-500/5 border-green-500/20" : "bg-destructive/5 border-destructive/20"}`}>
-                  <p className="font-semibold text-sm mb-1 flex items-center gap-2">
-                    {isCorrect ? (
-                      <><CheckCircle2 className="h-4 w-4 text-green-500" /> Correct!</>
-                    ) : (
-                      <><XCircle className="h-4 w-4 text-destructive" /> Incorrect</>
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="font-semibold text-sm flex items-center gap-2">
+                      {isCorrect ? (
+                        <><CheckCircle2 className="h-4 w-4 text-green-500" /> Correct!</>
+                      ) : (
+                        <><XCircle className="h-4 w-4 text-destructive" /> {timerExpired && !selectedAnswer ? "Time's up!" : "Incorrect"}</>
+                      )}
+                    </p>
+                    {lastPointsEarned !== null && (
+                      <Badge variant={lastPointsEarned > 0 ? "default" : "secondary"} className="text-xs animate-in fade-in slide-in-from-right-2 duration-300">
+                        {lastPointsEarned > 0 ? `+${lastPointsEarned} pts` : "+0 pts"}
+                        {lastPointsEarned > 10 && " 🔥"}
+                      </Badge>
                     )}
-                  </p>
+                  </div>
                   <p className="text-sm text-muted-foreground">{currentQuestion.explanation}</p>
                 </div>
               )}
