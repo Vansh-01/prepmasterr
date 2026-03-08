@@ -946,6 +946,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build native Android applications using Kotlin and Jetpack Compose",
     color: "bg-green-500/10 text-green-600 border-green-500/20",
     avgSalary: "$60K–$135K",
+    avgSalaryINR: "₹4L–₹18L",
     demandLevel: "High",
     steps: [
       {
