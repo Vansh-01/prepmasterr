@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, FileText, Loader2, Users, MapPin, Briefcase, X } from "lucide-react";
+import { ArrowLeft, FileText, Loader2, Users, MapPin, Briefcase } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
@@ -61,8 +60,6 @@ export default function JobApplicants() {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [resumeUrl, setResumeUrl] = useState<string | null>(null);
-  const [resumeLoading, setResumeLoading] = useState(false);
 
   useEffect(() => {
     if (jobId) fetchData();
@@ -119,27 +116,26 @@ export default function JobApplicants() {
     setLoading(false);
   };
 
-  const handleViewResume = async (rawUrl: string) => {
-    setResumeLoading(true);
-    setResumeUrl(null);
-
-    let storagePath = rawUrl;
+  const handleViewResume = async (resumeUrl: string) => {
+    const newWindow = window.open("", "_blank");
+    
+    let storagePath = resumeUrl;
     const marker = "/object/public/resumes/";
-    const idx = rawUrl.indexOf(marker);
+    const idx = resumeUrl.indexOf(marker);
     if (idx !== -1) {
-      storagePath = rawUrl.substring(idx + marker.length);
+      storagePath = resumeUrl.substring(idx + marker.length);
     }
 
     const { data } = await supabase.storage
       .from("resumes")
-      .createSignedUrl(storagePath, 600);
+      .createSignedUrl(storagePath, 300);
 
-    if (data?.signedUrl) {
-      setResumeUrl(data.signedUrl);
+    if (data?.signedUrl && newWindow) {
+      newWindow.location.href = data.signedUrl;
     } else {
+      newWindow?.close();
       toast({ title: "Error", description: "Could not load resume.", variant: "destructive" });
     }
-    setResumeLoading(false);
   };
 
   const handleStatusChange = async (applicationId: string, newStatus: string) => {
@@ -321,26 +317,6 @@ export default function JobApplicants() {
           </div>
         )}
       </main>
-
-      {/* Resume Viewer Dialog */}
-      <Dialog open={resumeUrl !== null || resumeLoading} onOpenChange={() => { setResumeUrl(null); setResumeLoading(false); }}>
-        <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 flex flex-col">
-          <DialogHeader className="p-4 pb-2">
-            <DialogTitle>Resume</DialogTitle>
-          </DialogHeader>
-          {resumeLoading ? (
-            <div className="flex-1 flex items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-            </div>
-          ) : resumeUrl ? (
-            <iframe
-              src={resumeUrl}
-              className="flex-1 w-full border-0 rounded-b-lg"
-              title="Resume Viewer"
-            />
-          ) : null}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
