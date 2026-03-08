@@ -1296,6 +1296,7 @@ export const careerPaths: CareerPath[] = [
     description: "Bridge the gap between business needs and technology solutions",
     color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
     avgSalary: "$55K–$100K",
+    avgSalaryINR: "₹4L–₹15L",
     demandLevel: "High",
     steps: [
       {
