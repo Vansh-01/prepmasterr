@@ -178,9 +178,14 @@ const AptitudePractice = () => {
             <h1 className="text-xl font-bold truncate">Aptitude Practice</h1>
             <p className="text-xs text-muted-foreground truncate">Quantitative & Logical Reasoning</p>
           </div>
-          <Badge variant="secondary" className="hidden sm:flex gap-1">
-            <CheckCircle2 className="h-3 w-3" /> {score}/{answered} correct
-          </Badge>
+          <div className="hidden sm:flex items-center gap-2">
+            <Badge variant="secondary" className="gap-1">
+              <CheckCircle2 className="h-3 w-3" /> {score}/{answered}
+            </Badge>
+            <Badge variant="default" className="gap-1">
+              🏆 {totalPoints} pts
+            </Badge>
+          </div>
           <div className="flex items-center gap-2">
             <Select
               value={String(timerDuration)}
