@@ -1,15 +1,39 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ChevronRight, CheckCircle2, Circle, MapPin, Clock, BookOpen, TrendingUp, Lightbulb } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, ChevronRight, CheckCircle2, Circle, MapPin, Clock, BookOpen, TrendingUp, Lightbulb, Search, Sparkles, X } from "lucide-react";
 import { careerPaths, type CareerPath } from "@/data/careerRoadmaps";
+
+const popularTags = ["Data", "Developer", "Security", "Cloud", "Design", "AI", "Product", "DevOps"];
+
+const recommendations: { label: string; query: string }[] = [
+  { label: "🔥 Trending in Tech", query: "Engineer" },
+  { label: "📊 Data Careers", query: "Data" },
+  { label: "🛡️ Security & Ops", query: "Security" },
+  { label: "🎨 Creative Roles", query: "Design" },
+  { label: "🤖 AI & ML", query: "AI" },
+];
 
 const Roadmap = () => {
   const navigate = useNavigate();
   const [selectedPath, setSelectedPath] = useState<CareerPath | null>(null);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  const filteredPaths = useMemo(() => {
+    const q = (activeTag || searchQuery).toLowerCase();
+    if (!q) return careerPaths;
+    return careerPaths.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.steps.some((s) => s.skills.some((sk) => sk.toLowerCase().includes(q)))
+    );
+  }, [searchQuery, activeTag]);
 
   const toggleStep = (stepTitle: string) => {
     setCompletedSteps((prev) => {
@@ -175,13 +199,66 @@ const Roadmap = () => {
             <h1 className="text-3xl sm:text-4xl font-bold mb-3">
               Choose Your Career Path
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-6">
               Follow a structured, step-by-step roadmap with {careerPaths.length} career paths. Each includes skills, resources, timelines, and pro tips.
             </p>
+
+            {/* Search Bar */}
+            <div className="max-w-xl mx-auto mb-4 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search by role, skill, or keyword..."
+                value={searchQuery}
+                onChange={(e) => { setSearchQuery(e.target.value); setActiveTag(null); }}
+                className="pl-10 pr-10"
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery("")} className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                </button>
+              )}
+            </div>
+
+            {/* Quick Tags */}
+            <div className="flex flex-wrap justify-center gap-2 mb-4">
+              {popularTags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant={activeTag === tag ? "default" : "outline"}
+                  className="cursor-pointer text-xs"
+                  onClick={() => { setActiveTag(activeTag === tag ? null : tag); setSearchQuery(""); }}
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+
+            {/* Recommendations */}
+            <div className="flex flex-wrap justify-center gap-2 mb-8">
+              {recommendations.map((rec) => (
+                <Button
+                  key={rec.label}
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs gap-1"
+                  onClick={() => { setSearchQuery(rec.query); setActiveTag(null); }}
+                >
+                  <Sparkles className="h-3 w-3 text-primary" />
+                  {rec.label}
+                </Button>
+              ))}
+            </div>
           </div>
 
+          {filteredPaths.length === 0 ? (
+            <div className="text-center py-16">
+              <Search className="h-12 w-12 text-muted-foreground/40 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-1">No roadmaps found</h3>
+              <p className="text-muted-foreground text-sm">Try a different search term or tag</p>
+            </div>
+          ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {careerPaths.map((path) => (
+            {filteredPaths.map((path) => (
               <Card
                 key={path.id}
                 className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer group"
@@ -211,6 +288,7 @@ const Roadmap = () => {
               </Card>
             ))}
           </div>
+          )}
         </div>
       </div>
     </div>
