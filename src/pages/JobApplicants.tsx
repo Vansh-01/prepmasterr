@@ -321,6 +321,26 @@ export default function JobApplicants() {
           </div>
         )}
       </main>
+
+      {/* Resume Viewer Dialog */}
+      <Dialog open={resumeUrl !== null || resumeLoading} onOpenChange={() => { setResumeUrl(null); setResumeLoading(false); }}>
+        <DialogContent className="max-w-4xl w-[95vw] h-[85vh] p-0 flex flex-col">
+          <DialogHeader className="p-4 pb-2">
+            <DialogTitle>Resume</DialogTitle>
+          </DialogHeader>
+          {resumeLoading ? (
+            <div className="flex-1 flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : resumeUrl ? (
+            <iframe
+              src={resumeUrl}
+              className="flex-1 w-full border-0 rounded-b-lg"
+              title="Resume Viewer"
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
