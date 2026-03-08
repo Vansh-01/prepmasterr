@@ -336,13 +336,21 @@ const AptitudePractice = () => {
               {/* Explanation */}
               {showExplanation && (
                 <div className={`p-4 rounded-lg border ${isCorrect ? "bg-green-500/5 border-green-500/20" : "bg-destructive/5 border-destructive/20"}`}>
-                  <p className="font-semibold text-sm mb-1 flex items-center gap-2">
-                    {isCorrect ? (
-                      <><CheckCircle2 className="h-4 w-4 text-green-500" /> Correct!</>
-                    ) : (
-                      <><XCircle className="h-4 w-4 text-destructive" /> Incorrect</>
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="font-semibold text-sm flex items-center gap-2">
+                      {isCorrect ? (
+                        <><CheckCircle2 className="h-4 w-4 text-green-500" /> Correct!</>
+                      ) : (
+                        <><XCircle className="h-4 w-4 text-destructive" /> {timerExpired && !selectedAnswer ? "Time's up!" : "Incorrect"}</>
+                      )}
+                    </p>
+                    {lastPointsEarned !== null && (
+                      <Badge variant={lastPointsEarned > 0 ? "default" : "secondary"} className="text-xs animate-in fade-in slide-in-from-right-2 duration-300">
+                        {lastPointsEarned > 0 ? `+${lastPointsEarned} pts` : "+0 pts"}
+                        {lastPointsEarned > 10 && " 🔥"}
+                      </Badge>
                     )}
-                  </p>
+                  </div>
                   <p className="text-sm text-muted-foreground">{currentQuestion.explanation}</p>
                 </div>
               )}
