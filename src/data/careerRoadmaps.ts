@@ -1646,6 +1646,7 @@ export const careerPaths: CareerPath[] = [
     description: "Ensure the reliability, scalability, and performance of large-scale production systems",
     color: "bg-red-500/10 text-red-600 border-red-500/20",
     avgSalary: "$90K–$180K",
+    avgSalaryINR: "₹8L–₹28L",
     demandLevel: "Very High",
     steps: [
       {
