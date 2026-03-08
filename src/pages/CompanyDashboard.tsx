@@ -163,10 +163,16 @@ export default function CompanyDashboard() {
               Manage your job postings and recruitment pipeline
             </p>
           </div>
-          <Button onClick={() => setShowCreateJob(true)} className="gap-2 shrink-0">
-            <Plus className="h-4 w-4" />
-            Post a Job
-          </Button>
+          <div className="flex gap-3 shrink-0">
+            <Button variant="outline" onClick={() => navigate("/candidate-search")} className="gap-2">
+              <Search className="h-4 w-4" />
+              Search Candidates
+            </Button>
+            <Button onClick={() => setShowCreateJob(true)} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Post a Job
+            </Button>
+          </div>
         </div>
 
         {/* Stats Grid */}
