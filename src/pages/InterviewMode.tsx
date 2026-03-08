@@ -288,7 +288,7 @@ const InterviewMode = () => {
           </div>
 
           {/* Progress Tracker */}
-          <div className="mb-10 p-6 rounded-xl border bg-card shadow-soft max-w-3xl mx-auto">
+          <div className="mb-10 p-6 rounded-xl border bg-card shadow-soft max-w-4xl mx-auto">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Target className="h-5 w-5 text-primary" />
               Your Progress
