@@ -1786,6 +1786,7 @@ export const careerPaths: CareerPath[] = [
     description: "Design end-to-end technical solutions that meet business requirements at scale",
     color: "bg-indigo-500/10 text-indigo-600 border-indigo-500/20",
     avgSalary: "$100K–$180K",
+    avgSalaryINR: "₹10L–₹30L",
     demandLevel: "Very High",
     steps: [
       {
