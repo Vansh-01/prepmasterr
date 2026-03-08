@@ -2,7 +2,7 @@ import {
   BarChart3, Code, Database, Brain, Shield, Cloud, Smartphone, Palette,
   TrendingUp, Server, Cpu, Gamepad2, Link2, TestTube, LineChart,
   HardDrive, Network, Bot, PenTool, CircuitBoard, Headphones,
-  Layers, Workflow, Globe, Search, Megaphone, ShoppingCart, Users, Blocks
+  Layers, Workflow, Globe, Search, Megaphone, ShoppingCart, Users, Blocks, Briefcase
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
