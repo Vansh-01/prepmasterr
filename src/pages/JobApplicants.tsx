@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, FileText, Loader2, Users, MapPin, Briefcase } from "lucide-react";
+import { ArrowLeft, FileText, Loader2, Users, MapPin, Briefcase, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
