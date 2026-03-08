@@ -21,6 +21,7 @@ import MyApplications from "./pages/MyApplications";
 import AptitudePractice from "./pages/AptitudePractice";
 import JobApplicants from "./pages/JobApplicants";
 import Roadmap from "./pages/Roadmap";
+import CandidateSearch from "./pages/CandidateSearch";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => (
           <Route path="/aptitude-practice" element={<AptitudePractice />} />
           <Route path="/job-applicants/:jobId" element={<JobApplicants />} />
           <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/candidate-search" element={<CandidateSearch />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
