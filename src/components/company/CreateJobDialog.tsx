@@ -52,7 +52,6 @@ export default function CreateJobDialog({
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
-  const [form, setForm] = useState({
     title: "",
     description: "",
     location: "",
@@ -74,26 +73,6 @@ export default function CreateJobDialog({
       salary_max: "",
       skills: [],
     });
-    setSkillInput("");
-  };
-
-  const addSkill = () => {
-    const trimmed = skillInput.trim();
-    if (trimmed && !form.skills.includes(trimmed) && form.skills.length < 15) {
-      setForm({ ...form, skills: [...form.skills, trimmed] });
-      setSkillInput("");
-    }
-  };
-
-  const removeSkill = (skill: string) => {
-    setForm({ ...form, skills: form.skills.filter((s) => s !== skill) });
-  };
-
-  const handleSkillKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addSkill();
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
