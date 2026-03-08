@@ -87,6 +87,8 @@ const AptitudePractice = () => {
     setIsAnswered(false);
     setShowExplanation(false);
     setScore(0);
+    setTotalPoints(0);
+    setLastPointsEarned(null);
     setAnswered(0);
     setTimerExpired(false);
   }, [category]);
