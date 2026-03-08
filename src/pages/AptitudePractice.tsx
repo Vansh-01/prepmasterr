@@ -226,11 +226,36 @@ const AptitudePractice = () => {
         </div>
 
         {/* Score card (mobile) */}
-        <div className="sm:hidden mb-4">
+        <div className="sm:hidden mb-4 flex items-center gap-2">
           <Badge variant="secondary" className="gap-1">
             <CheckCircle2 className="h-3 w-3" /> {score}/{answered} correct
           </Badge>
         </div>
+
+        {/* Timer Display */}
+        {timerEnabled && !isAnswered && (
+          <div className="mb-4 flex items-center gap-3">
+            <Clock className={`h-4 w-4 ${timeLeft <= 10 ? "text-destructive animate-pulse" : "text-muted-foreground"}`} />
+            <div className="flex-1 relative h-3 rounded-full bg-secondary overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-1000 ${
+                  timeLeft <= 10 ? "bg-destructive" : timerPercentage <= 30 ? "bg-yellow-500" : "bg-primary"
+                }`}
+                style={{ width: `${timerPercentage}%` }}
+              />
+            </div>
+            <span className={`text-sm font-mono font-bold min-w-[3rem] text-right ${timeLeft <= 10 ? "text-destructive" : "text-foreground"}`}>
+              {formatTime(timeLeft)}
+            </span>
+          </div>
+        )}
+
+        {timerExpired && !selectedAnswer && isAnswered && (
+          <div className="mb-4 p-3 rounded-lg border border-destructive/20 bg-destructive/5 flex items-center gap-2">
+            <TimerOff className="h-4 w-4 text-destructive" />
+            <span className="text-sm text-destructive font-medium">Time's up! Moving on...</span>
+          </div>
+        )}
 
         {/* Question Card */}
         {currentQuestion && (
