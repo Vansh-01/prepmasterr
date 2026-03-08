@@ -222,9 +222,9 @@ const InterviewMode = () => {
         </div>
       </header>
 
-      <div className="container px-4 sm:px-6 lg:px-8 py-20">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 animate-fade-in">
+      <div className="container px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10 animate-fade-in">
             <h1 className="text-4xl sm:text-5xl font-bold mb-4">
               Choose Your Practice Mode
             </h1>
@@ -234,7 +234,7 @@ const InterviewMode = () => {
           </div>
 
           {/* Progress Tracker */}
-          <div className="mb-10 p-6 rounded-xl border bg-card shadow-soft">
+          <div className="mb-10 p-6 rounded-xl border bg-card shadow-soft max-w-3xl mx-auto">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Target className="h-5 w-5 text-primary" />
               Your Progress
@@ -254,7 +254,7 @@ const InterviewMode = () => {
                     </div>
                     <div>
                       <p className="text-2xl font-bold">{stats.interviewsCompleted}</p>
-                      <p className="text-sm text-muted-foreground">Interviews Completed</p>
+                      <p className="text-sm text-muted-foreground">Interviews</p>
                     </div>
                   </div>
                 </div>
@@ -265,7 +265,7 @@ const InterviewMode = () => {
                     </div>
                     <div>
                       <p className="text-2xl font-bold">{stats.challengesCompleted}</p>
-                      <p className="text-sm text-muted-foreground">Challenges Completed</p>
+                      <p className="text-sm text-muted-foreground">Challenges</p>
                     </div>
                   </div>
                 </div>
@@ -276,7 +276,7 @@ const InterviewMode = () => {
                     </div>
                     <div>
                       <p className="text-2xl font-bold">{stats.totalPoints}</p>
-                      <p className="text-sm text-muted-foreground">Total Points</p>
+                      <p className="text-sm text-muted-foreground">Points</p>
                     </div>
                   </div>
                 </div>
@@ -289,24 +289,24 @@ const InterviewMode = () => {
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {modes.map((mode, index) => (
               <Card 
                 key={index}
-                className="hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer"
+                className="hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col"
                 onClick={mode.action}
               >
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                    <mode.icon className="w-6 h-6 text-primary" />
+                <CardHeader className="p-4 pb-2 flex-1">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
+                    <mode.icon className="w-5 h-5 text-primary" />
                   </div>
-                  <CardTitle className="text-xl">{mode.title}</CardTitle>
-                  <CardDescription className="text-sm">
+                  <CardTitle className="text-base">{mode.title}</CardTitle>
+                  <CardDescription className="text-xs leading-relaxed">
                     {mode.description}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <Button variant="outline" className="w-full">
+                <CardContent className="p-4 pt-0">
+                  <Button variant="outline" size="sm" className="w-full">
                     Get Started
                   </Button>
                 </CardContent>
