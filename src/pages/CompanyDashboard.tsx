@@ -121,7 +121,9 @@ export default function CompanyDashboard() {
             </span>
           </div>
 
-          <DropdownMenu>
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="flex items-center gap-2">
                 <Avatar className="w-6 h-6">
