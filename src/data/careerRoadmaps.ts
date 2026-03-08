@@ -22,6 +22,7 @@ export interface CareerPath {
   description: string;
   color: string;
   avgSalary: string;
+  avgSalaryINR: string;
   demandLevel: "High" | "Very High" | "Moderate" | "Growing";
   steps: RoadmapStep[];
 }
@@ -35,6 +36,7 @@ export const careerPaths: CareerPath[] = [
     description: "Analyze data to help businesses make informed, data-driven decisions",
     color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
     avgSalary: "$55K–$95K",
+    avgSalaryINR: "₹4L–₹12L",
     demandLevel: "Very High",
     steps: [
       {
@@ -104,6 +106,7 @@ export const careerPaths: CareerPath[] = [
     description: "Drive product decisions with data — measure user behavior, run experiments, and optimize features",
     color: "bg-indigo-500/10 text-indigo-600 border-indigo-500/20",
     avgSalary: "$70K–$120K",
+    avgSalaryINR: "₹6L–₹18L",
     demandLevel: "Very High",
     steps: [
       {
@@ -173,6 +176,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build beautiful, interactive, and performant web applications and user interfaces",
     color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
     avgSalary: "$60K–$130K",
+    avgSalaryINR: "₹4L–₹18L",
     demandLevel: "Very High",
     steps: [
       {
@@ -242,6 +246,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build robust servers, APIs, and database-driven applications that power the web",
     color: "bg-orange-500/10 text-orange-600 border-orange-500/20",
     avgSalary: "$65K–$140K",
+    avgSalaryINR: "₹5L–₹20L",
     demandLevel: "Very High",
     steps: [
       {
@@ -311,6 +316,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build complete web applications from frontend to backend, database to deployment",
     color: "bg-teal-500/10 text-teal-600 border-teal-500/20",
     avgSalary: "$70K–$150K",
+    avgSalaryINR: "₹5L–₹22L",
     demandLevel: "Very High",
     steps: [
       {
@@ -380,6 +386,7 @@ export const careerPaths: CareerPath[] = [
     description: "Use machine learning, AI, and statistical modeling to solve complex business problems",
     color: "bg-purple-500/10 text-purple-600 border-purple-500/20",
     avgSalary: "$80K–$160K",
+    avgSalaryINR: "₹6L–₹25L",
     demandLevel: "Very High",
     steps: [
       {
@@ -449,6 +456,7 @@ export const careerPaths: CareerPath[] = [
     description: "Protect systems, networks, and data from cyber threats and security breaches",
     color: "bg-red-500/10 text-red-600 border-red-500/20",
     avgSalary: "$65K–$130K",
+    avgSalaryINR: "₹5L–₹18L",
     demandLevel: "Very High",
     steps: [
       {
@@ -518,6 +526,7 @@ export const careerPaths: CareerPath[] = [
     description: "Design, deploy, and manage scalable cloud infrastructure and services",
     color: "bg-sky-500/10 text-sky-600 border-sky-500/20",
     avgSalary: "$80K–$155K",
+    avgSalaryINR: "₹6L–₹22L",
     demandLevel: "Very High",
     steps: [
       {
@@ -587,6 +596,7 @@ export const careerPaths: CareerPath[] = [
     description: "Bridge development and operations — automate everything, ship faster, fail safer",
     color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20",
     avgSalary: "$80K–$160K",
+    avgSalaryINR: "₹6L–₹25L",
     demandLevel: "Very High",
     steps: [
       {
@@ -656,6 +666,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build native and cross-platform mobile applications for iOS and Android",
     color: "bg-pink-500/10 text-pink-600 border-pink-500/20",
     avgSalary: "$65K–$140K",
+    avgSalaryINR: "₹5L–₹20L",
     demandLevel: "High",
     steps: [
       {
@@ -725,6 +736,7 @@ export const careerPaths: CareerPath[] = [
     description: "Design user-centered digital experiences that are beautiful, intuitive, and accessible",
     color: "bg-amber-500/10 text-amber-600 border-amber-500/20",
     avgSalary: "$60K–$130K",
+    avgSalaryINR: "₹4L–₹18L",
     demandLevel: "High",
     steps: [
       {
@@ -794,6 +806,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build and maintain the data infrastructure that powers analytics and ML systems",
     color: "bg-violet-500/10 text-violet-600 border-violet-500/20",
     avgSalary: "$85K–$165K",
+    avgSalaryINR: "₹7L–₹25L",
     demandLevel: "Very High",
     steps: [
       {
@@ -863,6 +876,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build, deploy, and scale machine learning models in production environments",
     color: "bg-rose-500/10 text-rose-600 border-rose-500/20",
     avgSalary: "$90K–$180K",
+    avgSalaryINR: "₹8L–₹28L",
     demandLevel: "Very High",
     steps: [
       {
@@ -932,6 +946,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build native Android applications using Kotlin and Jetpack Compose",
     color: "bg-green-500/10 text-green-600 border-green-500/20",
     avgSalary: "$60K–$135K",
+    avgSalaryINR: "₹4L–₹18L",
     demandLevel: "High",
     steps: [
       {
@@ -1001,6 +1016,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build beautiful, performant native iOS applications using Swift and SwiftUI",
     color: "bg-gray-500/10 text-gray-600 border-gray-500/20",
     avgSalary: "$70K–$150K",
+    avgSalaryINR: "₹5L–₹20L",
     demandLevel: "High",
     steps: [
       {
@@ -1070,6 +1086,7 @@ export const careerPaths: CareerPath[] = [
     description: "Create interactive games for PC, console, and mobile platforms",
     color: "bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/20",
     avgSalary: "$55K–$120K",
+    avgSalaryINR: "₹3L–₹15L",
     demandLevel: "Moderate",
     steps: [
       {
@@ -1139,6 +1156,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build decentralized applications, smart contracts, and Web3 protocols",
     color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20",
     avgSalary: "$80K–$180K",
+    avgSalaryINR: "₹6L–₹25L",
     demandLevel: "Growing",
     steps: [
       {
@@ -1208,6 +1226,7 @@ export const careerPaths: CareerPath[] = [
     description: "Ensure software quality through testing, automation, and quality processes",
     color: "bg-lime-500/10 text-lime-600 border-lime-500/20",
     avgSalary: "$55K–$110K",
+    avgSalaryINR: "₹3.5L–₹14L",
     demandLevel: "High",
     steps: [
       {
@@ -1277,6 +1296,7 @@ export const careerPaths: CareerPath[] = [
     description: "Bridge the gap between business needs and technology solutions",
     color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
     avgSalary: "$55K–$100K",
+    avgSalaryINR: "₹4L–₹15L",
     demandLevel: "High",
     steps: [
       {
@@ -1346,6 +1366,7 @@ export const careerPaths: CareerPath[] = [
     description: "Design, implement, and maintain computer networks and communication systems",
     color: "bg-slate-500/10 text-slate-600 border-slate-500/20",
     avgSalary: "$60K–$120K",
+    avgSalaryINR: "₹4L–₹15L",
     demandLevel: "High",
     steps: [
       {
@@ -1415,6 +1436,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build AI-powered applications using LLMs, embeddings, and intelligent agents",
     color: "bg-violet-500/10 text-violet-600 border-violet-500/20",
     avgSalary: "$100K–$200K",
+    avgSalaryINR: "₹8L–₹30L",
     demandLevel: "Very High",
     steps: [
       {
@@ -1484,6 +1506,7 @@ export const careerPaths: CareerPath[] = [
     description: "Create clear, accurate documentation for software, APIs, and technical products",
     color: "bg-stone-500/10 text-stone-600 border-stone-500/20",
     avgSalary: "$55K–$110K",
+    avgSalaryINR: "₹3.5L–₹12L",
     demandLevel: "High",
     steps: [
       {
@@ -1553,6 +1576,7 @@ export const careerPaths: CareerPath[] = [
     description: "Program microcontrollers and build hardware-software systems for IoT and devices",
     color: "bg-amber-500/10 text-amber-700 border-amber-500/20",
     avgSalary: "$70K–$135K",
+    avgSalaryINR: "₹5L–₹18L",
     demandLevel: "High",
     steps: [
       {
@@ -1622,6 +1646,7 @@ export const careerPaths: CareerPath[] = [
     description: "Ensure the reliability, scalability, and performance of large-scale production systems",
     color: "bg-red-500/10 text-red-600 border-red-500/20",
     avgSalary: "$90K–$180K",
+    avgSalaryINR: "₹8L–₹28L",
     demandLevel: "Very High",
     steps: [
       {
@@ -1691,6 +1716,7 @@ export const careerPaths: CareerPath[] = [
     description: "Define product vision, strategy, and roadmap to deliver value to users and business",
     color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
     avgSalary: "$80K–$170K",
+    avgSalaryINR: "₹12L–₹35L",
     demandLevel: "Very High",
     steps: [
       {
@@ -1760,6 +1786,7 @@ export const careerPaths: CareerPath[] = [
     description: "Design end-to-end technical solutions that meet business requirements at scale",
     color: "bg-indigo-500/10 text-indigo-600 border-indigo-500/20",
     avgSalary: "$100K–$180K",
+    avgSalaryINR: "₹10L–₹30L",
     demandLevel: "Very High",
     steps: [
       {
@@ -1829,6 +1856,7 @@ export const careerPaths: CareerPath[] = [
     description: "Analyze marketing campaigns, optimize spend, and drive growth through data",
     color: "bg-pink-500/10 text-pink-600 border-pink-500/20",
     avgSalary: "$50K–$95K",
+    avgSalaryINR: "₹3.5L–₹12L",
     demandLevel: "High",
     steps: [
       {
@@ -1898,6 +1926,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build and optimize online stores, manage product catalogs, and drive online sales",
     color: "bg-orange-500/10 text-orange-600 border-orange-500/20",
     avgSalary: "$45K–$90K",
+    avgSalaryINR: "₹3L–₹10L",
     demandLevel: "High",
     steps: [
       {

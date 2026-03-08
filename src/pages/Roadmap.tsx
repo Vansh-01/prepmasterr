@@ -80,7 +80,7 @@ const Roadmap = () => {
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
               <Badge variant="secondary">{selectedPath.demandLevel} Demand</Badge>
-              <span>💰 {selectedPath.avgSalary}</span>
+              <span>💰 {selectedPath.avgSalary} | {selectedPath.avgSalaryINR}</span>
               <span>{selectedPath.steps.length} phases</span>
             </div>
             <div className="mt-4 flex items-center gap-3">
@@ -278,7 +278,7 @@ const Roadmap = () => {
                 <CardContent className="pt-0">
                   <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
                     <Badge variant="secondary" className="text-[10px]">{path.demandLevel}</Badge>
-                    <span>{path.avgSalary}</span>
+                    <span>{path.avgSalary} | {path.avgSalaryINR}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>{path.steps.length} phases</span>
