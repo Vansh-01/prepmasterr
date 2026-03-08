@@ -20,6 +20,9 @@ interface UserStats {
   interviewsCompleted: number;
   challengesCompleted: number;
   totalPoints: number;
+  aptitudeCompleted: number;
+  aptitudeTotal: number;
+  aptitudeCorrect: number;
 }
 
 const InterviewMode = () => {
@@ -30,6 +33,9 @@ const InterviewMode = () => {
     interviewsCompleted: 0,
     challengesCompleted: 0,
     totalPoints: 0,
+    aptitudeCompleted: 0,
+    aptitudeTotal: 300,
+    aptitudeCorrect: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
    const [showWelcome, setShowWelcome] = useState(false);
@@ -55,10 +61,22 @@ const InterviewMode = () => {
         const challengesCompleted = challengeData?.length || 0;
         const totalPoints = challengeData?.reduce((sum, c) => sum + (c.points || 0), 0) || 0;
 
+        // Fetch aptitude progress
+        const { data: aptitudeData } = await supabase
+          .from("aptitude_progress")
+          .select("is_correct")
+          .eq("user_id", session.user.id);
+
+        const aptitudeCompleted = aptitudeData?.length || 0;
+        const aptitudeCorrect = aptitudeData?.filter((d: any) => d.is_correct).length || 0;
+
         setStats({
           interviewsCompleted: interviewCount || 0,
           challengesCompleted,
           totalPoints,
+          aptitudeCompleted,
+          aptitudeTotal: 300,
+          aptitudeCorrect,
         });
          
          // Check if this is a new user (first time visiting after signup/signin)
@@ -270,55 +288,86 @@ const InterviewMode = () => {
           </div>
 
           {/* Progress Tracker */}
-          <div className="mb-10 p-6 rounded-xl border bg-card shadow-soft max-w-3xl mx-auto">
+          <div className="mb-10 p-6 rounded-xl border bg-card shadow-soft max-w-4xl mx-auto">
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <Target className="h-5 w-5 text-primary" />
               Your Progress
             </h3>
             {isLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {[1, 2, 3].map((i) => (
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="h-20 bg-muted animate-pulse rounded-lg" />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-full bg-primary/10">
-                      <MessageSquare className="h-5 w-5 text-primary" />
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-primary/10">
+                        <MessageSquare className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">{stats.interviewsCompleted}</p>
+                        <p className="text-sm text-muted-foreground">Interviews</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-2xl font-bold">{stats.interviewsCompleted}</p>
-                      <p className="text-sm text-muted-foreground">Interviews</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-primary/10">
+                        <Code className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">{stats.challengesCompleted}</p>
+                        <p className="text-sm text-muted-foreground">Challenges</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-primary/10">
+                        <Zap className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">{stats.totalPoints}</p>
+                        <p className="text-sm text-muted-foreground">Points</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-full bg-primary/10">
+                        <Brain className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold">{stats.aptitudeCorrect}<span className="text-sm font-normal text-muted-foreground">/{stats.aptitudeCompleted}</span></p>
+                        <p className="text-sm text-muted-foreground">Aptitude</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-full bg-primary/10">
-                      <Code className="h-5 w-5 text-primary" />
+                {/* Aptitude Progress Bar */}
+                {stats.aptitudeCompleted > 0 && (
+                  <div className="mt-4 p-3 rounded-lg border bg-muted/30">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium flex items-center gap-1.5">
+                        <Brain className="h-3.5 w-3.5 text-primary" />
+                        Aptitude Progress
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {stats.aptitudeCompleted}/{stats.aptitudeTotal} completed • {stats.aptitudeTotal - stats.aptitudeCompleted} remaining
+                      </span>
                     </div>
-                    <div>
-                      <p className="text-2xl font-bold">{stats.challengesCompleted}</p>
-                      <p className="text-sm text-muted-foreground">Challenges</p>
-                    </div>
+                    <Progress value={(stats.aptitudeCompleted / stats.aptitudeTotal) * 100} className="h-2.5" />
+                    <p className="text-xs text-muted-foreground mt-1.5">
+                      Accuracy: {stats.aptitudeCompleted > 0 ? Math.round((stats.aptitudeCorrect / stats.aptitudeCompleted) * 100) : 0}% ({stats.aptitudeCorrect} correct)
+                    </p>
                   </div>
-                </div>
-                <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-full bg-primary/10">
-                      <Zap className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold">{stats.totalPoints}</p>
-                      <p className="text-sm text-muted-foreground">Points</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                )}
+              </>
             )}
-            {!isLoading && stats.interviewsCompleted === 0 && stats.challengesCompleted === 0 && (
+            {!isLoading && stats.interviewsCompleted === 0 && stats.challengesCompleted === 0 && stats.aptitudeCompleted === 0 && (
               <p className="mt-4 text-sm text-muted-foreground text-center">
                 Start practicing to track your progress!
               </p>

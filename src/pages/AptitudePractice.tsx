@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Brain, Calculator, CheckCircle2, XCircle, RotateCcw, ChevronLeft, ChevronRight, Timer, TimerOff, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { aptitudeQuestions, type AptitudeQuestion } from "@/data/aptitudeQuestions";
+import { supabase } from "@/integrations/supabase/client";
 
 type Category = "all" | "quantitative" | "logical";
 
@@ -24,13 +25,46 @@ const AptitudePractice = () => {
   const [lastPointsEarned, setLastPointsEarned] = useState<number | null>(null);
   const [answered, setAnswered] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [completedQuestionIds, setCompletedQuestionIds] = useState<Set<number>>(new Set());
 
   // Timer state
   const [timerEnabled, setTimerEnabled] = useState(false);
-  const [timerDuration, setTimerDuration] = useState(60); // seconds per question
+  const [timerDuration, setTimerDuration] = useState(60);
   const [timeLeft, setTimeLeft] = useState(60);
   const [timerExpired, setTimerExpired] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Load saved progress on mount
+  useEffect(() => {
+    const loadProgress = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      const { data } = await supabase
+        .from("aptitude_progress")
+        .select("question_id, is_correct, points_earned")
+        .eq("user_id", session.user.id);
+      if (data && data.length > 0) {
+        const ids = new Set(data.map((d: any) => d.question_id));
+        setCompletedQuestionIds(ids);
+        setAnswered(data.length);
+        setScore(data.filter((d: any) => d.is_correct).length);
+        setTotalPoints(data.reduce((sum: number, d: any) => sum + d.points_earned, 0));
+      }
+    };
+    loadProgress();
+  }, []);
+
+  const saveProgress = async (questionId: number, isCorrect: boolean, points: number) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+    await supabase.from("aptitude_progress").upsert({
+      user_id: session.user.id,
+      question_id: questionId,
+      is_correct: isCorrect,
+      points_earned: points,
+    }, { onConflict: "user_id,question_id" });
+    setCompletedQuestionIds(prev => new Set(prev).add(questionId));
+  };
 
   const filteredQuestions = useMemo(() => {
     const questions = category === "all" ? [...aptitudeQuestions] : aptitudeQuestions.filter((q) => q.category === category);
@@ -103,15 +137,18 @@ const AptitudePractice = () => {
     clearTimer();
     setIsAnswered(true);
     setAnswered((a) => a + 1);
-    if (parseInt(selectedAnswer) === currentQuestion.correctAnswer) {
+    const correct = parseInt(selectedAnswer) === currentQuestion.correctAnswer;
+    if (correct) {
       setScore((s) => s + 1);
       const basePoints = 10;
       const timeBonus = timerEnabled ? Math.ceil((timeLeft / timerDuration) * 5) : 0;
       const earned = basePoints + timeBonus;
       setTotalPoints((p) => p + earned);
       setLastPointsEarned(earned);
+      saveProgress(currentQuestion.id, true, earned);
     } else {
       setLastPointsEarned(0);
+      saveProgress(currentQuestion.id, false, 0);
     }
     setShowExplanation(true);
   };

@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      aptitude_progress: {
+        Row: {
+          created_at: string
+          id: string
+          is_correct: boolean
+          points_earned: number
+          question_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_correct: boolean
+          points_earned?: number
+          question_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_correct?: boolean
+          points_earned?: number
+          question_id?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       challenge_completions: {
         Row: {
           challenge_id: string
