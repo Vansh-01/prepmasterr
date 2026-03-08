@@ -14,7 +14,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
- import WelcomeDialog from "@/components/WelcomeDialog";
+import WelcomeDialog from "@/components/WelcomeDialog";
+import NotificationBell from "@/components/NotificationBell";
 
 interface UserStats {
   interviewsCompleted: number;

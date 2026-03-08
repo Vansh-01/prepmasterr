@@ -20,6 +20,7 @@ import {
   PauseCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import NotificationBell from "@/components/NotificationBell";
 import CreateJobDialog from "@/components/company/CreateJobDialog";
 import JobListings, { type JobPosting } from "@/components/company/JobListings";
 
