@@ -22,6 +22,7 @@ export interface CareerPath {
   description: string;
   color: string;
   avgSalary: string;
+  avgSalaryINR: string;
   demandLevel: "High" | "Very High" | "Moderate" | "Growing";
   steps: RoadmapStep[];
 }
