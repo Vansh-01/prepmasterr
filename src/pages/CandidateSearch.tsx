@@ -13,7 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, FileText, Loader2, Search, Users, Briefcase } from "lucide-react";
+import { ArrowLeft, CheckSquare, FileText, Loader2, Search, Users, Briefcase } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import NotificationBell from "@/components/NotificationBell";
@@ -65,7 +66,8 @@ export default function CandidateSearch() {
   const [jobFilter, setJobFilter] = useState("all");
   const [jobs, setJobs] = useState<{ id: string; title: string }[]>([]);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkUpdating, setBulkUpdating] = useState(false);
   useEffect(() => {
     fetchCandidates();
   }, []);
@@ -175,6 +177,42 @@ export default function CandidateSearch() {
     return profile;
   };
 
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filtered.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filtered.map((c) => c.applicationId)));
+    }
+  };
+
+  const handleBulkStatusChange = async (newStatus: string) => {
+    if (selectedIds.size === 0) return;
+    setBulkUpdating(true);
+    const ids = Array.from(selectedIds);
+    const { error } = await supabase
+      .from("job_applications")
+      .update({ status: newStatus })
+      .in("id", ids);
+    if (error) {
+      toast({ title: "Error", description: "Failed to update statuses.", variant: "destructive" });
+    } else {
+      setCandidates((prev) =>
+        prev.map((c) => (selectedIds.has(c.applicationId) ? { ...c, status: newStatus } : c))
+      );
+      toast({ title: "Bulk update", description: `${ids.length} application(s) marked as ${newStatus}.` });
+      setSelectedIds(new Set());
+    }
+    setBulkUpdating(false);
+  };
+
   const filtered = candidates.filter((c) => {
     if (statusFilter !== "all" && c.status !== statusFilter) return false;
     if (experienceFilter !== "all" && c.profile?.experience_level !== experienceFilter) return false;
@@ -251,9 +289,44 @@ export default function CandidateSearch() {
           </Select>
         </div>
 
-        <p className="text-sm text-muted-foreground mb-4">
-          {filtered.length} candidate{filtered.length !== 1 ? "s" : ""} found
-        </p>
+        {/* Bulk actions bar */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm text-muted-foreground">
+            {filtered.length} candidate{filtered.length !== 1 ? "s" : ""} found
+            {selectedIds.size > 0 && ` · ${selectedIds.size} selected`}
+          </p>
+          {selectedIds.size > 0 && (
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1.5 border-primary/20 text-primary hover:bg-primary/10"
+                onClick={() => handleBulkStatusChange("shortlisted")}
+                disabled={bulkUpdating}
+              >
+                <CheckSquare className="h-3.5 w-3.5" />
+                Shortlist ({selectedIds.size})
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1.5 border-destructive/20 text-destructive hover:bg-destructive/10"
+                onClick={() => handleBulkStatusChange("rejected")}
+                disabled={bulkUpdating}
+              >
+                Reject ({selectedIds.size})
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setSelectedIds(new Set())}
+                disabled={bulkUpdating}
+              >
+                Clear
+              </Button>
+            </div>
+          )}
+        </div>
 
         {/* Results */}
         {filtered.length === 0 ? (
@@ -270,11 +343,24 @@ export default function CandidateSearch() {
           </Card>
         ) : (
           <div className="space-y-3">
+            {/* Select all */}
+            <div className="flex items-center gap-2 px-1">
+              <Checkbox
+                checked={filtered.length > 0 && selectedIds.size === filtered.length}
+                onCheckedChange={toggleSelectAll}
+              />
+              <span className="text-xs text-muted-foreground">Select all</span>
+            </div>
             {filtered.map((c) => (
-              <Card key={c.applicationId}>
+              <Card key={c.applicationId} className={selectedIds.has(c.applicationId) ? "ring-1 ring-primary/30" : ""}>
                 <CardContent className="p-5">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <Checkbox
+                        checked={selectedIds.has(c.applicationId)}
+                        onCheckedChange={() => toggleSelect(c.applicationId)}
+                        className="shrink-0"
+                      />
                       <Avatar className="h-11 w-11 shrink-0">
                         <AvatarFallback className="bg-primary/10 text-primary">
                           {(c.profile?.username || "U").charAt(0).toUpperCase()}
