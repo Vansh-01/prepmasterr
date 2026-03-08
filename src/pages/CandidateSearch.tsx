@@ -66,7 +66,8 @@ export default function CandidateSearch() {
   const [jobFilter, setJobFilter] = useState("all");
   const [jobs, setJobs] = useState<{ id: string; title: string }[]>([]);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkUpdating, setBulkUpdating] = useState(false);
   useEffect(() => {
     fetchCandidates();
   }, []);
