@@ -329,21 +329,24 @@ const InterviewMode = () => {
             {modes.map((mode, index) => (
               <Card 
                 key={index}
-                className="hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer flex flex-col"
+                className={`hover:shadow-lg transition-all duration-300 hover:scale-[1.03] cursor-pointer flex flex-col bg-gradient-to-br ${mode.gradient} border`}
                 onClick={mode.action}
               >
-                <CardHeader className="p-4 pb-2 flex-1">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                    <mode.icon className="w-5 h-5 text-primary" />
+                <CardHeader className="p-5 pb-3 flex-1">
+                  <div className={`w-12 h-12 rounded-xl ${mode.iconBg} flex items-center justify-center mb-4`}>
+                    <mode.icon className={`w-6 h-6 ${mode.iconColor}`} />
                   </div>
-                  <CardTitle className="text-base">{mode.title}</CardTitle>
-                  <CardDescription className="text-xs leading-relaxed">
+                  <CardTitle className="text-lg mb-1">{mode.title}</CardTitle>
+                  <CardDescription className="text-sm leading-relaxed">
                     {mode.description}
                   </CardDescription>
+                  <p className="text-xs text-primary/80 font-medium mt-2">
+                    {mode.highlight}
+                  </p>
                 </CardHeader>
-                <CardContent className="p-4 pt-0">
+                <CardContent className="p-5 pt-0">
                   <Button variant="outline" size="sm" className="w-full">
-                    Get Started
+                    Get Started →
                   </Button>
                 </CardContent>
               </Card>
