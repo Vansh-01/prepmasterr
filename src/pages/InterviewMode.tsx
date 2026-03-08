@@ -20,6 +20,9 @@ interface UserStats {
   interviewsCompleted: number;
   challengesCompleted: number;
   totalPoints: number;
+  aptitudeCompleted: number;
+  aptitudeTotal: number;
+  aptitudeCorrect: number;
 }
 
 const InterviewMode = () => {
