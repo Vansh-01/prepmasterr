@@ -327,7 +327,7 @@ export default function JobBoard() {
                   <Badge variant="secondary">{LEVEL_LABELS[selectedJob.experience_level] || selectedJob.experience_level}</Badge>
                   {formatSalary(selectedJob.salary_min, selectedJob.salary_max) && (
                     <Badge variant="secondary" className="gap-1">
-                      <DollarSign className="h-3 w-3" />
+                      <IndianRupee className="h-3 w-3" />
                       {formatSalary(selectedJob.salary_min, selectedJob.salary_max)}
                     </Badge>
                   )}
