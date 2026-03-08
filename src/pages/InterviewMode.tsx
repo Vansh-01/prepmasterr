@@ -75,7 +75,7 @@ const InterviewMode = () => {
           challengesCompleted,
           totalPoints,
           aptitudeCompleted,
-          aptitudeTotal: 300,
+          aptitudeTotal: 500,
           aptitudeCorrect,
         });
          
