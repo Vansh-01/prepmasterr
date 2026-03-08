@@ -1016,6 +1016,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build beautiful, performant native iOS applications using Swift and SwiftUI",
     color: "bg-gray-500/10 text-gray-600 border-gray-500/20",
     avgSalary: "$70K–$150K",
+    avgSalaryINR: "₹5L–₹20L",
     demandLevel: "High",
     steps: [
       {
