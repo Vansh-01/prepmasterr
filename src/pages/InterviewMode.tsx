@@ -142,6 +142,13 @@ const InterviewMode = () => {
       description: "Practice quantitative aptitude and logical reasoning MCQs",
       path: "/aptitude-practice",
       action: () => checkAuthAndNavigate("/aptitude-practice")
+    },
+    {
+      icon: MapPin,
+      title: "Career Roadmap",
+      description: "Explore step-by-step career paths with skills, resources & timelines",
+      path: "/roadmap",
+      action: () => checkAuthAndNavigate("/roadmap")
     }
   ];
 
