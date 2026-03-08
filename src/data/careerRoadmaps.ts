@@ -1576,6 +1576,7 @@ export const careerPaths: CareerPath[] = [
     description: "Program microcontrollers and build hardware-software systems for IoT and devices",
     color: "bg-amber-500/10 text-amber-700 border-amber-500/20",
     avgSalary: "$70K–$135K",
+    avgSalaryINR: "₹5L–₹18L",
     demandLevel: "High",
     steps: [
       {
