@@ -18,6 +18,7 @@ import CompanyAuth from "./pages/CompanyAuth";
 import CompanyDashboard from "./pages/CompanyDashboard";
 import JobBoard from "./pages/JobBoard";
 import MyApplications from "./pages/MyApplications";
+import AptitudePractice from "./pages/AptitudePractice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
