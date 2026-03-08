@@ -177,6 +177,42 @@ export default function CandidateSearch() {
     return profile;
   };
 
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filtered.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filtered.map((c) => c.applicationId)));
+    }
+  };
+
+  const handleBulkStatusChange = async (newStatus: string) => {
+    if (selectedIds.size === 0) return;
+    setBulkUpdating(true);
+    const ids = Array.from(selectedIds);
+    const { error } = await supabase
+      .from("job_applications")
+      .update({ status: newStatus })
+      .in("id", ids);
+    if (error) {
+      toast({ title: "Error", description: "Failed to update statuses.", variant: "destructive" });
+    } else {
+      setCandidates((prev) =>
+        prev.map((c) => (selectedIds.has(c.applicationId) ? { ...c, status: newStatus } : c))
+      );
+      toast({ title: "Bulk update", description: `${ids.length} application(s) marked as ${newStatus}.` });
+      setSelectedIds(new Set());
+    }
+    setBulkUpdating(false);
+  };
+
   const filtered = candidates.filter((c) => {
     if (statusFilter !== "all" && c.status !== statusFilter) return false;
     if (experienceFilter !== "all" && c.profile?.experience_level !== experienceFilter) return false;
