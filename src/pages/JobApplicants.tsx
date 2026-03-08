@@ -119,26 +119,27 @@ export default function JobApplicants() {
     setLoading(false);
   };
 
-  const handleViewResume = async (resumeUrl: string) => {
-    const newWindow = window.open("", "_blank");
-    
-    let storagePath = resumeUrl;
+  const handleViewResume = async (rawUrl: string) => {
+    setResumeLoading(true);
+    setResumeUrl(null);
+
+    let storagePath = rawUrl;
     const marker = "/object/public/resumes/";
-    const idx = resumeUrl.indexOf(marker);
+    const idx = rawUrl.indexOf(marker);
     if (idx !== -1) {
-      storagePath = resumeUrl.substring(idx + marker.length);
+      storagePath = rawUrl.substring(idx + marker.length);
     }
 
     const { data } = await supabase.storage
       .from("resumes")
-      .createSignedUrl(storagePath, 300);
+      .createSignedUrl(storagePath, 600);
 
-    if (data?.signedUrl && newWindow) {
-      newWindow.location.href = data.signedUrl;
+    if (data?.signedUrl) {
+      setResumeUrl(data.signedUrl);
     } else {
-      newWindow?.close();
       toast({ title: "Error", description: "Could not load resume.", variant: "destructive" });
     }
+    setResumeLoading(false);
   };
 
   const handleStatusChange = async (applicationId: string, newStatus: string) => {
