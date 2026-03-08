@@ -14,7 +14,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
- import WelcomeDialog from "@/components/WelcomeDialog";
+import WelcomeDialog from "@/components/WelcomeDialog";
+import NotificationBell from "@/components/NotificationBell";
 
 interface UserStats {
   interviewsCompleted: number;
@@ -218,7 +219,9 @@ const InterviewMode = () => {
             </nav>
           </div>
 
-          <DropdownMenu>
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                 <Avatar className="h-10 w-10">
@@ -255,6 +258,7 @@ const InterviewMode = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          </div>
         </div>
       </header>
 

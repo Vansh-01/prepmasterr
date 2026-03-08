@@ -20,6 +20,7 @@ import {
   PauseCircle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import NotificationBell from "@/components/NotificationBell";
 import CreateJobDialog from "@/components/company/CreateJobDialog";
 import JobListings, { type JobPosting } from "@/components/company/JobListings";
 
@@ -120,7 +121,9 @@ export default function CompanyDashboard() {
             </span>
           </div>
 
-          <DropdownMenu>
+          <div className="flex items-center gap-2">
+            <NotificationBell />
+            <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="flex items-center gap-2">
                 <Avatar className="w-6 h-6">
@@ -143,6 +146,7 @@ export default function CompanyDashboard() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          </div>
         </div>
       </header>
 
