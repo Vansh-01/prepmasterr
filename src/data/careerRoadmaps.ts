@@ -666,6 +666,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build native and cross-platform mobile applications for iOS and Android",
     color: "bg-pink-500/10 text-pink-600 border-pink-500/20",
     avgSalary: "$65K–$140K",
+    avgSalaryINR: "₹5L–₹20L",
     demandLevel: "High",
     steps: [
       {
