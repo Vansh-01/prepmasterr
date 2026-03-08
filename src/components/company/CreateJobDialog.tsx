@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, X } from "lucide-react";
+import SkillAutocomplete from "@/components/company/SkillAutocomplete";
 import { Badge } from "@/components/ui/badge";
 
 interface CreateJobDialogProps {
