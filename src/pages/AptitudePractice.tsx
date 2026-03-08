@@ -137,15 +137,18 @@ const AptitudePractice = () => {
     clearTimer();
     setIsAnswered(true);
     setAnswered((a) => a + 1);
-    if (parseInt(selectedAnswer) === currentQuestion.correctAnswer) {
+    const correct = parseInt(selectedAnswer) === currentQuestion.correctAnswer;
+    if (correct) {
       setScore((s) => s + 1);
       const basePoints = 10;
       const timeBonus = timerEnabled ? Math.ceil((timeLeft / timerDuration) * 5) : 0;
       const earned = basePoints + timeBonus;
       setTotalPoints((p) => p + earned);
       setLastPointsEarned(earned);
+      saveProgress(currentQuestion.id, true, earned);
     } else {
       setLastPointsEarned(0);
+      saveProgress(currentQuestion.id, false, 0);
     }
     setShowExplanation(true);
   };
