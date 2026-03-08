@@ -1506,6 +1506,7 @@ export const careerPaths: CareerPath[] = [
     description: "Create clear, accurate documentation for software, APIs, and technical products",
     color: "bg-stone-500/10 text-stone-600 border-stone-500/20",
     avgSalary: "$55K–$110K",
+    avgSalaryINR: "₹3.5L–₹12L",
     demandLevel: "High",
     steps: [
       {
