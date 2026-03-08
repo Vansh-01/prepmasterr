@@ -526,6 +526,7 @@ export const careerPaths: CareerPath[] = [
     description: "Design, deploy, and manage scalable cloud infrastructure and services",
     color: "bg-sky-500/10 text-sky-600 border-sky-500/20",
     avgSalary: "$80K–$155K",
+    avgSalaryINR: "₹6L–₹22L",
     demandLevel: "Very High",
     steps: [
       {
