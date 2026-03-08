@@ -142,6 +142,13 @@ const InterviewMode = () => {
       description: "Practice quantitative aptitude and logical reasoning MCQs",
       path: "/aptitude-practice",
       action: () => checkAuthAndNavigate("/aptitude-practice")
+    },
+    {
+      icon: MapPin,
+      title: "Career Roadmap",
+      description: "Explore step-by-step career paths with skills, resources & timelines",
+      path: "/roadmap",
+      action: () => checkAuthAndNavigate("/roadmap")
     }
   ];
 
@@ -184,15 +191,6 @@ const InterviewMode = () => {
                 <User className="h-4 w-4" />
                 Profile Settings
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate("/roadmap")}
-                className="gap-2"
-              >
-                <MapPin className="h-4 w-4" />
-                Roadmap
-              </Button>
             </nav>
           </div>
 
@@ -225,10 +223,7 @@ const InterviewMode = () => {
                 <User className="mr-2 h-4 w-4" />
                 Profile Settings
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate("/roadmap")} className="md:hidden">
-                <MapPin className="mr-2 h-4 w-4" />
-                Roadmap
-              </DropdownMenuItem>
+              <DropdownMenuSeparator className="md:hidden" />
               <DropdownMenuSeparator className="md:hidden" />
               <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
                 <LogOut className="mr-2 h-4 w-4" />
@@ -306,7 +301,7 @@ const InterviewMode = () => {
             )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {modes.map((mode, index) => (
               <Card 
                 key={index}
