@@ -20,6 +20,8 @@ const AptitudePractice = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [lastPointsEarned, setLastPointsEarned] = useState<number | null>(null);
   const [answered, setAnswered] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
 
