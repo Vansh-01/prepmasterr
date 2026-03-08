@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Brain, Calculator, CheckCircle2, XCircle, RotateCcw, ChevronLeft, ChevronRight, Timer, TimerOff, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { aptitudeQuestions, type AptitudeQuestion } from "@/data/aptitudeQuestions";
+import { supabase } from "@/integrations/supabase/client";
 
 type Category = "all" | "quantitative" | "logical";
 
