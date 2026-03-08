@@ -289,9 +289,44 @@ export default function CandidateSearch() {
           </Select>
         </div>
 
-        <p className="text-sm text-muted-foreground mb-4">
-          {filtered.length} candidate{filtered.length !== 1 ? "s" : ""} found
-        </p>
+        {/* Bulk actions bar */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm text-muted-foreground">
+            {filtered.length} candidate{filtered.length !== 1 ? "s" : ""} found
+            {selectedIds.size > 0 && ` · ${selectedIds.size} selected`}
+          </p>
+          {selectedIds.size > 0 && (
+            <div className="flex items-center gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1.5 border-primary/20 text-primary hover:bg-primary/10"
+                onClick={() => handleBulkStatusChange("shortlisted")}
+                disabled={bulkUpdating}
+              >
+                <CheckSquare className="h-3.5 w-3.5" />
+                Shortlist ({selectedIds.size})
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="gap-1.5 border-destructive/20 text-destructive hover:bg-destructive/10"
+                onClick={() => handleBulkStatusChange("rejected")}
+                disabled={bulkUpdating}
+              >
+                Reject ({selectedIds.size})
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setSelectedIds(new Set())}
+                disabled={bulkUpdating}
+              >
+                Clear
+              </Button>
+            </div>
+          )}
+        </div>
 
         {/* Results */}
         {filtered.length === 0 ? (
