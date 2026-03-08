@@ -105,6 +105,8 @@ export default function JobApplicants() {
   };
 
   const handleViewResume = async (resumeUrl: string) => {
+    const newWindow = window.open("", "_blank");
+    
     let storagePath = resumeUrl;
     const marker = "/object/public/resumes/";
     const idx = resumeUrl.indexOf(marker);
@@ -116,9 +118,10 @@ export default function JobApplicants() {
       .from("resumes")
       .createSignedUrl(storagePath, 300);
 
-    if (data?.signedUrl) {
-      window.open(data.signedUrl, "_blank");
+    if (data?.signedUrl && newWindow) {
+      newWindow.location.href = data.signedUrl;
     } else {
+      newWindow?.close();
       toast({ title: "Error", description: "Could not load resume.", variant: "destructive" });
     }
   };
