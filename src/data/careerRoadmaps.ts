@@ -1086,6 +1086,7 @@ export const careerPaths: CareerPath[] = [
     description: "Create interactive games for PC, console, and mobile platforms",
     color: "bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/20",
     avgSalary: "$55K–$120K",
+    avgSalaryINR: "₹3L–₹15L",
     demandLevel: "Moderate",
     steps: [
       {
