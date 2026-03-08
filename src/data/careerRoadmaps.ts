@@ -1366,6 +1366,7 @@ export const careerPaths: CareerPath[] = [
     description: "Design, implement, and maintain computer networks and communication systems",
     color: "bg-slate-500/10 text-slate-600 border-slate-500/20",
     avgSalary: "$60K–$120K",
+    avgSalaryINR: "₹4L–₹15L",
     demandLevel: "High",
     steps: [
       {
