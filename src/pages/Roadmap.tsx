@@ -1,15 +1,39 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ChevronRight, CheckCircle2, Circle, MapPin, Clock, BookOpen, TrendingUp, Lightbulb } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ArrowLeft, ChevronRight, CheckCircle2, Circle, MapPin, Clock, BookOpen, TrendingUp, Lightbulb, Search, Sparkles, X } from "lucide-react";
 import { careerPaths, type CareerPath } from "@/data/careerRoadmaps";
+
+const popularTags = ["Data", "Developer", "Security", "Cloud", "Design", "AI", "Product", "DevOps"];
+
+const recommendations: { label: string; query: string }[] = [
+  { label: "🔥 Trending in Tech", query: "Engineer" },
+  { label: "📊 Data Careers", query: "Data" },
+  { label: "🛡️ Security & Ops", query: "Security" },
+  { label: "🎨 Creative Roles", query: "Design" },
+  { label: "🤖 AI & ML", query: "AI" },
+];
 
 const Roadmap = () => {
   const navigate = useNavigate();
   const [selectedPath, setSelectedPath] = useState<CareerPath | null>(null);
   const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  const filteredPaths = useMemo(() => {
+    const q = (activeTag || searchQuery).toLowerCase();
+    if (!q) return careerPaths;
+    return careerPaths.filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.steps.some((s) => s.skills.some((sk) => sk.toLowerCase().includes(q)))
+    );
+  }, [searchQuery, activeTag]);
 
   const toggleStep = (stepTitle: string) => {
     setCompletedSteps((prev) => {
