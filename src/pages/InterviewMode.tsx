@@ -55,22 +55,10 @@ const InterviewMode = () => {
         const challengesCompleted = challengeData?.length || 0;
         const totalPoints = challengeData?.reduce((sum, c) => sum + (c.points || 0), 0) || 0;
 
-        // Fetch aptitude progress
-        const { data: aptitudeData } = await supabase
-          .from("aptitude_progress")
-          .select("is_correct")
-          .eq("user_id", session.user.id);
-
-        const aptitudeCompleted = aptitudeData?.length || 0;
-        const aptitudeCorrect = aptitudeData?.filter((d: any) => d.is_correct).length || 0;
-
         setStats({
           interviewsCompleted: interviewCount || 0,
           challengesCompleted,
           totalPoints,
-          aptitudeCompleted,
-          aptitudeTotal: 500,
-          aptitudeCorrect,
         });
          
          // Check if this is a new user (first time visiting after signup/signin)
