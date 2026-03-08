@@ -247,7 +247,10 @@ const AptitudePractice = () => {
         {/* Score card (mobile) */}
         <div className="sm:hidden mb-4 flex items-center gap-2">
           <Badge variant="secondary" className="gap-1">
-            <CheckCircle2 className="h-3 w-3" /> {score}/{answered} correct
+            <CheckCircle2 className="h-3 w-3" /> {score}/{answered}
+          </Badge>
+          <Badge variant="default" className="gap-1">
+            🏆 {totalPoints} pts
           </Badge>
         </div>
 
