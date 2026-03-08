@@ -208,6 +208,10 @@ const InterviewMode = () => {
                 <LayoutDashboard className="mr-2 h-4 w-4" />
                 Dashboard
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/jobs")} className="md:hidden">
+                <Briefcase className="mr-2 h-4 w-4" />
+                Jobs
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigate("/profile-settings")} className="md:hidden">
                 <User className="mr-2 h-4 w-4" />
                 Profile Settings
