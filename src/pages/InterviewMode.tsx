@@ -30,9 +30,6 @@ const InterviewMode = () => {
     interviewsCompleted: 0,
     challengesCompleted: 0,
     totalPoints: 0,
-    aptitudeCompleted: 0,
-    aptitudeTotal: 500,
-    aptitudeCorrect: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
    const [showWelcome, setShowWelcome] = useState(false);
