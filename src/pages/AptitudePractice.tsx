@@ -167,6 +167,34 @@ const AptitudePractice = () => {
           <Badge variant="secondary" className="hidden sm:flex gap-1">
             <CheckCircle2 className="h-3 w-3" /> {score}/{answered} correct
           </Badge>
+          <div className="flex items-center gap-2">
+            <Select
+              value={String(timerDuration)}
+              onValueChange={(v) => {
+                setTimerDuration(Number(v));
+                setTimeLeft(Number(v));
+              }}
+            >
+              <SelectTrigger className="w-[90px] h-8 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="30">30s</SelectItem>
+                <SelectItem value="60">1 min</SelectItem>
+                <SelectItem value="90">1.5 min</SelectItem>
+                <SelectItem value="120">2 min</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              variant={timerEnabled ? "default" : "outline"}
+              size="sm"
+              onClick={toggleTimer}
+              className="gap-1 h-8 text-xs"
+            >
+              {timerEnabled ? <TimerOff className="h-3.5 w-3.5" /> : <Timer className="h-3.5 w-3.5" />}
+              <span className="hidden sm:inline">{timerEnabled ? "Stop" : "Timer"}</span>
+            </Button>
+          </div>
         </div>
       </header>
 
