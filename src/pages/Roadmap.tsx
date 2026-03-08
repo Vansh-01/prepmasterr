@@ -278,7 +278,7 @@ const Roadmap = () => {
                 <CardContent className="pt-0">
                   <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
                     <Badge variant="secondary" className="text-[10px]">{path.demandLevel}</Badge>
-                    <span>{path.avgSalary}</span>
+                    <span>{path.avgSalary} | {path.avgSalaryINR}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>{path.steps.length} phases</span>
