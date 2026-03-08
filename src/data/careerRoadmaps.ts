@@ -1926,6 +1926,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build and optimize online stores, manage product catalogs, and drive online sales",
     color: "bg-orange-500/10 text-orange-600 border-orange-500/20",
     avgSalary: "$45K–$90K",
+    avgSalaryINR: "₹3L–₹10L",
     demandLevel: "High",
     steps: [
       {
