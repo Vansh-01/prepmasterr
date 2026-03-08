@@ -19,8 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import SkillAutocomplete from "@/components/company/SkillAutocomplete";
 import { JobPosting } from "./JobListings";
 
 interface EditJobDialogProps {
@@ -53,7 +52,6 @@ export default function EditJobDialog({
 }: EditJobDialogProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [skillInput, setSkillInput] = useState("");
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -77,28 +75,8 @@ export default function EditJobDialog({
         salary_max: job.salary_max?.toString() ?? "",
         skills: job.skills ?? [],
       });
-      setSkillInput("");
     }
   }, [open, job]);
-
-  const addSkill = () => {
-    const trimmed = skillInput.trim();
-    if (trimmed && !form.skills.includes(trimmed) && form.skills.length < 15) {
-      setForm({ ...form, skills: [...form.skills, trimmed] });
-      setSkillInput("");
-    }
-  };
-
-  const removeSkill = (skill: string) => {
-    setForm({ ...form, skills: form.skills.filter((s) => s !== skill) });
-  };
-
-  const handleSkillKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      addSkill();
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,22 +173,11 @@ export default function EditJobDialog({
 
           <div className="space-y-2">
             <Label>Skills (optional)</Label>
-            <div className="flex gap-2">
-              <Input placeholder="Type a skill and press Enter" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} onKeyDown={handleSkillKeyDown} maxLength={50} disabled={isSubmitting} />
-              <Button type="button" variant="outline" size="icon" onClick={addSkill} disabled={isSubmitting || !skillInput.trim()}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-            {form.skills.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {form.skills.map((skill) => (
-                  <Badge key={skill} variant="secondary" className="gap-1 pr-1">
-                    {skill}
-                    <button type="button" onClick={() => removeSkill(skill)} className="ml-1 hover:text-destructive"><X className="h-3 w-3" /></button>
-                  </Badge>
-                ))}
-              </div>
-            )}
+            <SkillAutocomplete
+              skills={form.skills}
+              onSkillsChange={(skills) => setForm({ ...form, skills })}
+              disabled={isSubmitting}
+            />
           </div>
 
           <div className="space-y-2">
