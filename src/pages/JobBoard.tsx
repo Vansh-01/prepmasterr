@@ -63,7 +63,7 @@ const LEVEL_LABELS: Record<string, string> = {
 
 const formatSalary = (min: number | null, max: number | null) => {
   if (!min && !max) return null;
-  const fmt = (n: number) => (n >= 1000 ? `$${(n / 1000).toFixed(0)}k` : `$${n}`);
+  const fmt = (n: number) => (n >= 100000 ? `₹${(n / 100000).toFixed(1)}L` : `₹${n.toLocaleString("en-IN")}`);
   if (min && max) return `${fmt(min)} – ${fmt(max)}`;
   if (min) return `From ${fmt(min)}`;
   return `Up to ${fmt(max!)}`;
