@@ -18,6 +18,7 @@ import {
   Briefcase,
   Plus,
   PauseCircle,
+  Search,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import NotificationBell from "@/components/NotificationBell";
