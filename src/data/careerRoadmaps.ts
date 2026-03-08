@@ -106,6 +106,7 @@ export const careerPaths: CareerPath[] = [
     description: "Drive product decisions with data — measure user behavior, run experiments, and optimize features",
     color: "bg-indigo-500/10 text-indigo-600 border-indigo-500/20",
     avgSalary: "$70K–$120K",
+    avgSalaryINR: "₹6L–₹18L",
     demandLevel: "Very High",
     steps: [
       {
