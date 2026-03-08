@@ -316,6 +316,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build complete web applications from frontend to backend, database to deployment",
     color: "bg-teal-500/10 text-teal-600 border-teal-500/20",
     avgSalary: "$70K–$150K",
+    avgSalaryINR: "₹5L–₹22L",
     demandLevel: "Very High",
     steps: [
       {
