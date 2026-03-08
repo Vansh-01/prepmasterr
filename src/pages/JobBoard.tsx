@@ -81,6 +81,7 @@ export default function JobBoard() {
   const [appliedJobs, setAppliedJobs] = useState<Set<string>>(new Set());
   const [applyingJobId, setApplyingJobId] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isCompany, setIsCompany] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -90,6 +91,15 @@ export default function JobBoard() {
         return;
       }
       setUserId(session.user.id);
+
+      // Check if user is a company account
+      const { data: companyProfile } = await supabase
+        .from("company_profiles")
+        .select("id")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+      setIsCompany(!!companyProfile);
+
       fetchJobs();
       fetchAppliedJobs(session.user.id);
     };
@@ -272,15 +282,17 @@ export default function JobBoard() {
                     </div>
                   )}
                   <p className="text-sm text-muted-foreground line-clamp-2">{job.description}</p>
-                  <div className="flex justify-end pt-1">
-                    <Button
-                      size="sm"
-                      disabled={appliedJobs.has(job.id) || applyingJobId === job.id}
-                      onClick={(e) => { e.stopPropagation(); handleApply(job.id); }}
-                    >
-                      {appliedJobs.has(job.id) ? "Applied ✓" : applyingJobId === job.id ? "Applying..." : "Apply Now"}
-                    </Button>
-                  </div>
+                  {!isCompany && (
+                    <div className="flex justify-end pt-1">
+                      <Button
+                        size="sm"
+                        disabled={appliedJobs.has(job.id) || applyingJobId === job.id}
+                        onClick={(e) => { e.stopPropagation(); handleApply(job.id); }}
+                      >
+                        {appliedJobs.has(job.id) ? "Applied ✓" : applyingJobId === job.id ? "Applying..." : "Apply Now"}
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -341,13 +353,15 @@ export default function JobBoard() {
                   Posted {format(new Date(selectedJob.created_at), "MMMM d, yyyy")}
                 </p>
 
-                <Button
-                  className="w-full"
-                  disabled={appliedJobs.has(selectedJob.id) || applyingJobId === selectedJob.id}
-                  onClick={() => handleApply(selectedJob.id)}
-                >
-                  {appliedJobs.has(selectedJob.id) ? "Applied ✓" : applyingJobId === selectedJob.id ? "Applying..." : "Apply Now"}
-                </Button>
+                {!isCompany && (
+                  <Button
+                    className="w-full"
+                    disabled={appliedJobs.has(selectedJob.id) || applyingJobId === selectedJob.id}
+                    onClick={() => handleApply(selectedJob.id)}
+                  >
+                    {appliedJobs.has(selectedJob.id) ? "Applied ✓" : applyingJobId === selectedJob.id ? "Applying..." : "Apply Now"}
+                  </Button>
+                )}
               </div>
             </>
           )}
