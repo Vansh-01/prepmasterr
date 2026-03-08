@@ -876,6 +876,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build, deploy, and scale machine learning models in production environments",
     color: "bg-rose-500/10 text-rose-600 border-rose-500/20",
     avgSalary: "$90K–$180K",
+    avgSalaryINR: "₹8L–₹28L",
     demandLevel: "Very High",
     steps: [
       {
