@@ -135,6 +135,13 @@ const InterviewMode = () => {
       description: "Get AI-powered feedback on your resume to stand out",
       path: "/resume-analyzer",
       action: () => checkAuthAndNavigate("/resume-analyzer")
+    },
+    {
+      icon: Brain,
+      title: "Aptitude Practice",
+      description: "Practice quantitative aptitude and logical reasoning MCQs",
+      path: "/aptitude-practice",
+      action: () => checkAuthAndNavigate("/aptitude-practice")
     }
   ];
 
