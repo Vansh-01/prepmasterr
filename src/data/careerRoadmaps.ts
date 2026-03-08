@@ -736,6 +736,7 @@ export const careerPaths: CareerPath[] = [
     description: "Design user-centered digital experiences that are beautiful, intuitive, and accessible",
     color: "bg-amber-500/10 text-amber-600 border-amber-500/20",
     avgSalary: "$60K–$130K",
+    avgSalaryINR: "₹4L–₹18L",
     demandLevel: "High",
     steps: [
       {
