@@ -86,18 +86,30 @@ export default function JobApplicants() {
 
     if (apps && apps.length > 0) {
       const userIds = apps.map((a) => a.user_id);
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("id, username, experience_level, job_profile, resume_url")
-        .in("id", userIds);
+      
+      // Fetch profiles and company profiles in parallel
+      const [{ data: profiles }, { data: companyUsers }] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("id, username, experience_level, job_profile, resume_url")
+          .in("id", userIds),
+        supabase
+          .from("company_profiles")
+          .select("user_id")
+          .in("user_id", userIds),
+      ]);
 
+      const companyUserIds = new Set(companyUsers?.map((c) => c.user_id) || []);
       const profileMap = new Map(profiles?.map((p) => [p.id, p]) || []);
 
+      // Filter out company accounts
       setApplicants(
-        apps.map((app) => ({
-          ...app,
-          profile: profileMap.get(app.user_id) || null,
-        }))
+        apps
+          .filter((app) => !companyUserIds.has(app.user_id))
+          .map((app) => ({
+            ...app,
+            profile: profileMap.get(app.user_id) || null,
+          }))
       );
     }
 
