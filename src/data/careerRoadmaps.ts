@@ -386,6 +386,7 @@ export const careerPaths: CareerPath[] = [
     description: "Use machine learning, AI, and statistical modeling to solve complex business problems",
     color: "bg-purple-500/10 text-purple-600 border-purple-500/20",
     avgSalary: "$80K–$160K",
+    avgSalaryINR: "₹6L–₹25L",
     demandLevel: "Very High",
     steps: [
       {
