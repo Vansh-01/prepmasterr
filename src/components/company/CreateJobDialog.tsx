@@ -52,7 +52,7 @@ export default function CreateJobDialog({
 }: CreateJobDialogProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [skillInput, setSkillInput] = useState("");
+  const [form, setForm] = useState({
   const [form, setForm] = useState({
     title: "",
     description: "",
