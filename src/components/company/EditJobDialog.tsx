@@ -173,22 +173,11 @@ export default function EditJobDialog({
 
           <div className="space-y-2">
             <Label>Skills (optional)</Label>
-            <div className="flex gap-2">
-              <Input placeholder="Type a skill and press Enter" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} onKeyDown={handleSkillKeyDown} maxLength={50} disabled={isSubmitting} />
-              <Button type="button" variant="outline" size="icon" onClick={addSkill} disabled={isSubmitting || !skillInput.trim()}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-            {form.skills.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-2">
-                {form.skills.map((skill) => (
-                  <Badge key={skill} variant="secondary" className="gap-1 pr-1">
-                    {skill}
-                    <button type="button" onClick={() => removeSkill(skill)} className="ml-1 hover:text-destructive"><X className="h-3 w-3" /></button>
-                  </Badge>
-                ))}
-              </div>
-            )}
+            <SkillAutocomplete
+              skills={form.skills}
+              onSkillsChange={(skills) => setForm({ ...form, skills })}
+              disabled={isSubmitting}
+            />
           </div>
 
           <div className="space-y-2">
