@@ -23,6 +23,13 @@ const AptitudePractice = () => {
   const [answered, setAnswered] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
 
+  // Timer state
+  const [timerEnabled, setTimerEnabled] = useState(false);
+  const [timerDuration, setTimerDuration] = useState(60); // seconds per question
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [timerExpired, setTimerExpired] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
   const filteredQuestions = useMemo(() => {
     if (category === "all") return aptitudeQuestions;
     return aptitudeQuestions.filter((q) => q.category === category);
@@ -32,6 +39,46 @@ const AptitudePractice = () => {
   const totalQuestions = filteredQuestions.length;
   const progress = totalQuestions > 0 ? ((currentIndex + 1) / totalQuestions) * 100 : 0;
 
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  const startTimer = useCallback(() => {
+    clearTimer();
+    setTimeLeft(timerDuration);
+    setTimerExpired(false);
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearTimer();
+          setTimerExpired(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [timerDuration, clearTimer]);
+
+  // Auto-submit when timer expires
+  useEffect(() => {
+    if (timerExpired && !isAnswered && currentQuestion) {
+      setIsAnswered(true);
+      setAnswered((a) => a + 1);
+      setShowExplanation(true);
+    }
+  }, [timerExpired, isAnswered, currentQuestion]);
+
+  // Start/reset timer when question changes
+  useEffect(() => {
+    if (timerEnabled && !isAnswered) {
+      startTimer();
+    }
+    return () => clearTimer();
+  }, [currentIndex, timerEnabled, category]);
+
   useEffect(() => {
     setCurrentIndex(0);
     setSelectedAnswer("");
@@ -39,10 +86,12 @@ const AptitudePractice = () => {
     setShowExplanation(false);
     setScore(0);
     setAnswered(0);
+    setTimerExpired(false);
   }, [category]);
 
   const handleSubmitAnswer = () => {
     if (!selectedAnswer || !currentQuestion) return;
+    clearTimer();
     setIsAnswered(true);
     setAnswered((a) => a + 1);
     if (parseInt(selectedAnswer) === currentQuestion.correctAnswer) {
@@ -57,6 +106,7 @@ const AptitudePractice = () => {
       setSelectedAnswer("");
       setIsAnswered(false);
       setShowExplanation(false);
+      setTimerExpired(false);
     }
   };
 
@@ -66,17 +116,37 @@ const AptitudePractice = () => {
       setSelectedAnswer("");
       setIsAnswered(false);
       setShowExplanation(false);
+      setTimerExpired(false);
     }
   };
 
   const handleReset = () => {
+    clearTimer();
     setCurrentIndex(0);
     setSelectedAnswer("");
     setIsAnswered(false);
     setShowExplanation(false);
     setScore(0);
     setAnswered(0);
+    setTimerExpired(false);
   };
+
+  const toggleTimer = () => {
+    if (timerEnabled) {
+      clearTimer();
+      setTimerEnabled(false);
+    } else {
+      setTimerEnabled(true);
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
+
+  const timerPercentage = timerDuration > 0 ? (timeLeft / timerDuration) * 100 : 0;
 
   const isCorrect = currentQuestion
     ? parseInt(selectedAnswer) === currentQuestion.correctAnswer
