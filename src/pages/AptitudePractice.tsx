@@ -118,6 +118,7 @@ const AptitudePractice = () => {
       setIsAnswered(false);
       setShowExplanation(false);
       setTimerExpired(false);
+      setLastPointsEarned(null);
     }
   };
 
