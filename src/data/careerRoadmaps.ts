@@ -456,6 +456,7 @@ export const careerPaths: CareerPath[] = [
     description: "Protect systems, networks, and data from cyber threats and security breaches",
     color: "bg-red-500/10 text-red-600 border-red-500/20",
     avgSalary: "$65K–$130K",
+    avgSalaryINR: "₹5L–₹18L",
     demandLevel: "Very High",
     steps: [
       {
