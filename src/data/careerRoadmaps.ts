@@ -1716,6 +1716,7 @@ export const careerPaths: CareerPath[] = [
     description: "Define product vision, strategy, and roadmap to deliver value to users and business",
     color: "bg-blue-500/10 text-blue-600 border-blue-500/20",
     avgSalary: "$80K–$170K",
+    avgSalaryINR: "₹12L–₹35L",
     demandLevel: "Very High",
     steps: [
       {
