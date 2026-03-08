@@ -176,6 +176,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build beautiful, interactive, and performant web applications and user interfaces",
     color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
     avgSalary: "$60K–$130K",
+    avgSalaryINR: "₹4L–₹18L",
     demandLevel: "Very High",
     steps: [
       {
