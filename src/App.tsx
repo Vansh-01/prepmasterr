@@ -20,6 +20,7 @@ import JobBoard from "./pages/JobBoard";
 import MyApplications from "./pages/MyApplications";
 import AptitudePractice from "./pages/AptitudePractice";
 import JobApplicants from "./pages/JobApplicants";
+import Roadmap from "./pages/Roadmap";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
