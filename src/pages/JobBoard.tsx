@@ -26,7 +26,7 @@ import {
   Clock,
   Search,
   ArrowLeft,
-  DollarSign,
+  IndianRupee,
   Building2,
   FileText,
 } from "lucide-react";
@@ -63,7 +63,7 @@ const LEVEL_LABELS: Record<string, string> = {
 
 const formatSalary = (min: number | null, max: number | null) => {
   if (!min && !max) return null;
-  const fmt = (n: number) => (n >= 1000 ? `$${(n / 1000).toFixed(0)}k` : `$${n}`);
+  const fmt = (n: number) => (n >= 100000 ? `₹${(n / 100000).toFixed(1)}L` : `₹${n.toLocaleString("en-IN")}`);
   if (min && max) return `${fmt(min)} – ${fmt(max)}`;
   if (min) return `From ${fmt(min)}`;
   return `Up to ${fmt(max!)}`;
@@ -269,7 +269,7 @@ export default function JobBoard() {
                     <Badge variant="secondary">{LEVEL_LABELS[job.experience_level] || job.experience_level}</Badge>
                     {formatSalary(job.salary_min, job.salary_max) && (
                       <Badge variant="secondary" className="gap-1">
-                        <DollarSign className="h-3 w-3" />
+                        <IndianRupee className="h-3 w-3" />
                         {formatSalary(job.salary_min, job.salary_max)}
                       </Badge>
                     )}
@@ -327,7 +327,7 @@ export default function JobBoard() {
                   <Badge variant="secondary">{LEVEL_LABELS[selectedJob.experience_level] || selectedJob.experience_level}</Badge>
                   {formatSalary(selectedJob.salary_min, selectedJob.salary_max) && (
                     <Badge variant="secondary" className="gap-1">
-                      <DollarSign className="h-3 w-3" />
+                      <IndianRupee className="h-3 w-3" />
                       {formatSalary(selectedJob.salary_min, selectedJob.salary_max)}
                     </Badge>
                   )}

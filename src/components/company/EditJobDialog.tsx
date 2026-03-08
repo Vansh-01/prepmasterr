@@ -184,12 +184,12 @@ export default function EditJobDialog({
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-salary-min">Min Salary (optional)</Label>
-              <Input id="edit-salary-min" type="number" value={form.salary_min} onChange={(e) => setForm({ ...form, salary_min: e.target.value })} min={0} disabled={isSubmitting} />
+              <Label htmlFor="edit-salary-min">Min Salary in ₹ (optional)</Label>
+              <Input id="edit-salary-min" type="number" placeholder="e.g. 400000" value={form.salary_min} onChange={(e) => setForm({ ...form, salary_min: e.target.value })} min={0} disabled={isSubmitting} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-salary-max">Max Salary (optional)</Label>
-              <Input id="edit-salary-max" type="number" value={form.salary_max} onChange={(e) => setForm({ ...form, salary_max: e.target.value })} min={0} disabled={isSubmitting} />
+              <Label htmlFor="edit-salary-max">Max Salary in ₹ (optional)</Label>
+              <Input id="edit-salary-max" type="number" placeholder="e.g. 800000" value={form.salary_max} onChange={(e) => setForm({ ...form, salary_max: e.target.value })} min={0} disabled={isSubmitting} />
             </div>
           </div>
 

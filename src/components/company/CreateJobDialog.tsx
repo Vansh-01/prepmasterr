@@ -258,11 +258,11 @@ export default function CreateJobDialog({
           {/* Salary Range */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="salary-min">Min Salary (optional)</Label>
+              <Label htmlFor="salary-min">Min Salary in ₹ (optional)</Label>
               <Input
                 id="salary-min"
                 type="number"
-                placeholder="e.g. 50000"
+                placeholder="e.g. 400000"
                 value={form.salary_min}
                 onChange={(e) => setForm({ ...form, salary_min: e.target.value })}
                 min={0}
@@ -270,11 +270,11 @@ export default function CreateJobDialog({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="salary-max">Max Salary (optional)</Label>
+              <Label htmlFor="salary-max">Max Salary in ₹ (optional)</Label>
               <Input
                 id="salary-max"
                 type="number"
-                placeholder="e.g. 80000"
+                placeholder="e.g. 800000"
                 value={form.salary_max}
                 onChange={(e) => setForm({ ...form, salary_max: e.target.value })}
                 min={0}
