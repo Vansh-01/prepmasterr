@@ -1436,6 +1436,7 @@ export const careerPaths: CareerPath[] = [
     description: "Build AI-powered applications using LLMs, embeddings, and intelligent agents",
     color: "bg-violet-500/10 text-violet-600 border-violet-500/20",
     avgSalary: "$100K–$200K",
+    avgSalaryINR: "₹8L–₹30L",
     demandLevel: "Very High",
     steps: [
       {
