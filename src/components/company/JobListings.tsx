@@ -276,19 +276,6 @@ export default function JobListings({ jobs, onRefresh, onCreateClick }: JobListi
         />
       )}
 
-      {/* Applicants Dialog */}
-      <Dialog open={!!viewingApplicantsJob} onOpenChange={(open) => !open && setViewingApplicantsJob(null)}>
-        <DialogContent className="sm:max-w-[550px] max-h-[80vh] overflow-y-auto">
-          {viewingApplicantsJob && (
-            <>
-              <DialogHeader>
-                <DialogTitle>Applicants for "{viewingApplicantsJob.title}"</DialogTitle>
-              </DialogHeader>
-              <ApplicantsList jobId={viewingApplicantsJob.id} />
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </>
   );
 }
