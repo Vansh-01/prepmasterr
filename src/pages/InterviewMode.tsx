@@ -111,44 +111,68 @@ const InterviewMode = () => {
     {
       icon: MessageSquare,
       title: "Interview Practice",
-      description: "Practice your interview skills with AI-powered voice interviews tailored to your job profile",
+      description: "Practice your interview skills with AI-powered voice interviews tailored to your job profile.",
+      highlight: "Real-time AI feedback • Voice-based • Role-specific questions",
       path: "/interview-practice",
-      action: () => checkAuthAndNavigate("/interview-practice")
+      action: () => checkAuthAndNavigate("/interview-practice"),
+      gradient: "from-blue-500/10 to-indigo-500/10",
+      iconBg: "bg-blue-500/15",
+      iconColor: "text-blue-600",
     },
     {
       icon: Code,
-      title: "Start Practicing",
-      description: "Write code in a VS Code-like environment and practice coding",
+      title: "Code Editor",
+      description: "Write and run code in a VS Code-like environment with syntax highlighting and multiple language support.",
+      highlight: "Multi-language • Live execution • Auto-complete",
       path: "/coding-practice",
-      action: () => checkAuthAndNavigate("/coding-practice")
+      action: () => checkAuthAndNavigate("/coding-practice"),
+      gradient: "from-emerald-500/10 to-teal-500/10",
+      iconBg: "bg-emerald-500/15",
+      iconColor: "text-emerald-600",
     },
     {
       icon: Trophy,
       title: "Coding Challenge",
-      description: "Take on coding challenges and test your skills",
+      description: "Take on timed coding challenges, earn points, and climb the leaderboard against other students.",
+      highlight: "Timed challenges • Points system • Leaderboard",
       path: "/coding-challenge",
-      action: () => checkAuthAndNavigate("/coding-challenge")
+      action: () => checkAuthAndNavigate("/coding-challenge"),
+      gradient: "from-amber-500/10 to-orange-500/10",
+      iconBg: "bg-amber-500/15",
+      iconColor: "text-amber-600",
     },
     {
       icon: FileText,
       title: "Resume Analyzer",
-      description: "Get AI-powered feedback on your resume to stand out",
+      description: "Upload your resume and get instant AI-powered feedback with actionable suggestions to improve it.",
+      highlight: "AI-powered analysis • ATS score • Improvement tips",
       path: "/resume-analyzer",
-      action: () => checkAuthAndNavigate("/resume-analyzer")
+      action: () => checkAuthAndNavigate("/resume-analyzer"),
+      gradient: "from-violet-500/10 to-purple-500/10",
+      iconBg: "bg-violet-500/15",
+      iconColor: "text-violet-600",
     },
     {
       icon: Brain,
       title: "Aptitude Practice",
-      description: "Practice quantitative aptitude and logical reasoning MCQs",
+      description: "Sharpen your quantitative aptitude and logical reasoning skills with curated MCQ sets.",
+      highlight: "500+ questions • Quant & logical • Detailed solutions",
       path: "/aptitude-practice",
-      action: () => checkAuthAndNavigate("/aptitude-practice")
+      action: () => checkAuthAndNavigate("/aptitude-practice"),
+      gradient: "from-pink-500/10 to-rose-500/10",
+      iconBg: "bg-pink-500/15",
+      iconColor: "text-pink-600",
     },
     {
       icon: MapPin,
       title: "Career Roadmap",
-      description: "Explore step-by-step career paths with skills, resources & timelines",
+      description: "Explore 28+ detailed career paths with skills, resources, timelines, and salary insights in INR.",
+      highlight: "28+ paths • Step-by-step • Salary insights",
       path: "/roadmap",
-      action: () => checkAuthAndNavigate("/roadmap")
+      action: () => checkAuthAndNavigate("/roadmap"),
+      gradient: "from-cyan-500/10 to-sky-500/10",
+      iconBg: "bg-cyan-500/15",
+      iconColor: "text-cyan-600",
     }
   ];
 
