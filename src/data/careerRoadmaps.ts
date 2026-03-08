@@ -1226,6 +1226,7 @@ export const careerPaths: CareerPath[] = [
     description: "Ensure software quality through testing, automation, and quality processes",
     color: "bg-lime-500/10 text-lime-600 border-lime-500/20",
     avgSalary: "$55K–$110K",
+    avgSalaryINR: "₹3.5L–₹14L",
     demandLevel: "High",
     steps: [
       {
