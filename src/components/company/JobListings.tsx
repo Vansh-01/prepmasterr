@@ -185,7 +185,7 @@ export default function JobListings({ jobs, onRefresh, onCreateClick }: JobListi
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => setViewingApplicantsJob(job)}
+                    onClick={() => navigateTo(`/job-applicants/${job.id}`)}
                     title="View applicants"
                   >
                     <Users className="h-4 w-4" />
