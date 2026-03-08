@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquare, Code, Trophy, FileText, LayoutDashboard, User, LogOut, Target, Zap, Briefcase, Brain } from "lucide-react";
+import { MessageSquare, Code, Trophy, FileText, LayoutDashboard, User, LogOut, Target, Zap, Briefcase, Brain, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -184,6 +184,15 @@ const InterviewMode = () => {
                 <User className="h-4 w-4" />
                 Profile Settings
               </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate("/roadmap")}
+                className="gap-2"
+              >
+                <MapPin className="h-4 w-4" />
+                Roadmap
+              </Button>
             </nav>
           </div>
 
@@ -215,6 +224,10 @@ const InterviewMode = () => {
               <DropdownMenuItem onClick={() => navigate("/profile-settings")} className="md:hidden">
                 <User className="mr-2 h-4 w-4" />
                 Profile Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/roadmap")} className="md:hidden">
+                <MapPin className="mr-2 h-4 w-4" />
+                Roadmap
               </DropdownMenuItem>
               <DropdownMenuSeparator className="md:hidden" />
               <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
