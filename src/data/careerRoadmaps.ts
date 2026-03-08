@@ -596,6 +596,7 @@ export const careerPaths: CareerPath[] = [
     description: "Bridge development and operations — automate everything, ship faster, fail safer",
     color: "bg-cyan-500/10 text-cyan-600 border-cyan-500/20",
     avgSalary: "$80K–$160K",
+    avgSalaryINR: "₹6L–₹25L",
     demandLevel: "Very High",
     steps: [
       {
