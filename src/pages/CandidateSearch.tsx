@@ -343,11 +343,24 @@ export default function CandidateSearch() {
           </Card>
         ) : (
           <div className="space-y-3">
+            {/* Select all */}
+            <div className="flex items-center gap-2 px-1">
+              <Checkbox
+                checked={filtered.length > 0 && selectedIds.size === filtered.length}
+                onCheckedChange={toggleSelectAll}
+              />
+              <span className="text-xs text-muted-foreground">Select all</span>
+            </div>
             {filtered.map((c) => (
-              <Card key={c.applicationId}>
+              <Card key={c.applicationId} className={selectedIds.has(c.applicationId) ? "ring-1 ring-primary/30" : ""}>
                 <CardContent className="p-5">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <Checkbox
+                        checked={selectedIds.has(c.applicationId)}
+                        onCheckedChange={() => toggleSelect(c.applicationId)}
+                        className="shrink-0"
+                      />
                       <Avatar className="h-11 w-11 shrink-0">
                         <AvatarFallback className="bg-primary/10 text-primary">
                           {(c.profile?.username || "U").charAt(0).toUpperCase()}
