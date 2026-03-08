@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Brain, Calculator, CheckCircle2, XCircle, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ArrowLeft, Brain, Calculator, CheckCircle2, XCircle, RotateCcw, ChevronLeft, ChevronRight, Timer, TimerOff, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { aptitudeQuestions, type AptitudeQuestion } from "@/data/aptitudeQuestions";
 
@@ -22,6 +23,13 @@ const AptitudePractice = () => {
   const [answered, setAnswered] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
 
+  // Timer state
+  const [timerEnabled, setTimerEnabled] = useState(false);
+  const [timerDuration, setTimerDuration] = useState(60); // seconds per question
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [timerExpired, setTimerExpired] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
   const filteredQuestions = useMemo(() => {
     if (category === "all") return aptitudeQuestions;
     return aptitudeQuestions.filter((q) => q.category === category);
@@ -31,6 +39,46 @@ const AptitudePractice = () => {
   const totalQuestions = filteredQuestions.length;
   const progress = totalQuestions > 0 ? ((currentIndex + 1) / totalQuestions) * 100 : 0;
 
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+
+  const startTimer = useCallback(() => {
+    clearTimer();
+    setTimeLeft(timerDuration);
+    setTimerExpired(false);
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearTimer();
+          setTimerExpired(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [timerDuration, clearTimer]);
+
+  // Auto-submit when timer expires
+  useEffect(() => {
+    if (timerExpired && !isAnswered && currentQuestion) {
+      setIsAnswered(true);
+      setAnswered((a) => a + 1);
+      setShowExplanation(true);
+    }
+  }, [timerExpired, isAnswered, currentQuestion]);
+
+  // Start/reset timer when question changes
+  useEffect(() => {
+    if (timerEnabled && !isAnswered) {
+      startTimer();
+    }
+    return () => clearTimer();
+  }, [currentIndex, timerEnabled, category]);
+
   useEffect(() => {
     setCurrentIndex(0);
     setSelectedAnswer("");
@@ -38,10 +86,12 @@ const AptitudePractice = () => {
     setShowExplanation(false);
     setScore(0);
     setAnswered(0);
+    setTimerExpired(false);
   }, [category]);
 
   const handleSubmitAnswer = () => {
     if (!selectedAnswer || !currentQuestion) return;
+    clearTimer();
     setIsAnswered(true);
     setAnswered((a) => a + 1);
     if (parseInt(selectedAnswer) === currentQuestion.correctAnswer) {
@@ -56,6 +106,7 @@ const AptitudePractice = () => {
       setSelectedAnswer("");
       setIsAnswered(false);
       setShowExplanation(false);
+      setTimerExpired(false);
     }
   };
 
@@ -65,17 +116,37 @@ const AptitudePractice = () => {
       setSelectedAnswer("");
       setIsAnswered(false);
       setShowExplanation(false);
+      setTimerExpired(false);
     }
   };
 
   const handleReset = () => {
+    clearTimer();
     setCurrentIndex(0);
     setSelectedAnswer("");
     setIsAnswered(false);
     setShowExplanation(false);
     setScore(0);
     setAnswered(0);
+    setTimerExpired(false);
   };
+
+  const toggleTimer = () => {
+    if (timerEnabled) {
+      clearTimer();
+      setTimerEnabled(false);
+    } else {
+      setTimerEnabled(true);
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
+
+  const timerPercentage = timerDuration > 0 ? (timeLeft / timerDuration) * 100 : 0;
 
   const isCorrect = currentQuestion
     ? parseInt(selectedAnswer) === currentQuestion.correctAnswer
@@ -96,6 +167,34 @@ const AptitudePractice = () => {
           <Badge variant="secondary" className="hidden sm:flex gap-1">
             <CheckCircle2 className="h-3 w-3" /> {score}/{answered} correct
           </Badge>
+          <div className="flex items-center gap-2">
+            <Select
+              value={String(timerDuration)}
+              onValueChange={(v) => {
+                setTimerDuration(Number(v));
+                setTimeLeft(Number(v));
+              }}
+            >
+              <SelectTrigger className="w-[90px] h-8 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="30">30s</SelectItem>
+                <SelectItem value="60">1 min</SelectItem>
+                <SelectItem value="90">1.5 min</SelectItem>
+                <SelectItem value="120">2 min</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              variant={timerEnabled ? "default" : "outline"}
+              size="sm"
+              onClick={toggleTimer}
+              className="gap-1 h-8 text-xs"
+            >
+              {timerEnabled ? <TimerOff className="h-3.5 w-3.5" /> : <Timer className="h-3.5 w-3.5" />}
+              <span className="hidden sm:inline">{timerEnabled ? "Stop" : "Timer"}</span>
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -127,11 +226,36 @@ const AptitudePractice = () => {
         </div>
 
         {/* Score card (mobile) */}
-        <div className="sm:hidden mb-4">
+        <div className="sm:hidden mb-4 flex items-center gap-2">
           <Badge variant="secondary" className="gap-1">
             <CheckCircle2 className="h-3 w-3" /> {score}/{answered} correct
           </Badge>
         </div>
+
+        {/* Timer Display */}
+        {timerEnabled && !isAnswered && (
+          <div className="mb-4 flex items-center gap-3">
+            <Clock className={`h-4 w-4 ${timeLeft <= 10 ? "text-destructive animate-pulse" : "text-muted-foreground"}`} />
+            <div className="flex-1 relative h-3 rounded-full bg-secondary overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-1000 ${
+                  timeLeft <= 10 ? "bg-destructive" : timerPercentage <= 30 ? "bg-yellow-500" : "bg-primary"
+                }`}
+                style={{ width: `${timerPercentage}%` }}
+              />
+            </div>
+            <span className={`text-sm font-mono font-bold min-w-[3rem] text-right ${timeLeft <= 10 ? "text-destructive" : "text-foreground"}`}>
+              {formatTime(timeLeft)}
+            </span>
+          </div>
+        )}
+
+        {timerExpired && !selectedAnswer && isAnswered && (
+          <div className="mb-4 p-3 rounded-lg border border-destructive/20 bg-destructive/5 flex items-center gap-2">
+            <TimerOff className="h-4 w-4 text-destructive" />
+            <span className="text-sm text-destructive font-medium">Time's up! Moving on...</span>
+          </div>
+        )}
 
         {/* Question Card */}
         {currentQuestion && (
