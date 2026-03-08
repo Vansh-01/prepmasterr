@@ -80,7 +80,7 @@ const Roadmap = () => {
             </div>
             <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
               <Badge variant="secondary">{selectedPath.demandLevel} Demand</Badge>
-              <span>💰 {selectedPath.avgSalary}</span>
+              <span>💰 {selectedPath.avgSalary} | {selectedPath.avgSalaryINR}</span>
               <span>{selectedPath.steps.length} phases</span>
             </div>
             <div className="mt-4 flex items-center gap-3">
