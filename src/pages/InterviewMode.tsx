@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageSquare, Code, Trophy, FileText, LayoutDashboard, User, LogOut, Target, Zap, Briefcase } from "lucide-react";
+import { MessageSquare, Code, Trophy, FileText, LayoutDashboard, User, LogOut, Target, Zap, Briefcase, Brain } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -135,6 +135,13 @@ const InterviewMode = () => {
       description: "Get AI-powered feedback on your resume to stand out",
       path: "/resume-analyzer",
       action: () => checkAuthAndNavigate("/resume-analyzer")
+    },
+    {
+      icon: Brain,
+      title: "Aptitude Practice",
+      description: "Practice quantitative aptitude and logical reasoning MCQs",
+      path: "/aptitude-practice",
+      action: () => checkAuthAndNavigate("/aptitude-practice")
     }
   ];
 
